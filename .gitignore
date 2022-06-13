@@ -96,6 +96,10 @@ Network Trash Folder
 Temporary Items
 .apdisk
 <<<<<<< HEAD
+<<<<<<< HEAD
 .idea/*
 =======
 >>>>>>> 45b6970 (add gitignore)
+=======
+.idea/*
+>>>>>>> 562f59f (add readme)
