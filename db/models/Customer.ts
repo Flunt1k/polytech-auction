@@ -1,4 +1,4 @@
-import {Column, ForeignKey, Model, Table} from 'sequelize-typescript';
+import {Column, ForeignKey, HasMany, Model, Table} from 'sequelize-typescript';
 import {DataTypes} from 'sequelize';
 import {Order} from './Order';
 
@@ -26,8 +26,7 @@ export class Customer extends Model<Customer, CustomerCreateArgs> {
     @Column({
         type: DataTypes.UUID,
         primaryKey: true,
-        unique: true,
-        defaultValue: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
     })
     id!: string;
 
@@ -82,4 +81,8 @@ export class Customer extends Model<Customer, CustomerCreateArgs> {
         defaultValue: 0,
     })
     cash!: string;
+
+    // eslint-disable-next-line new-cap
+    @HasMany(() => Order, 'id')
+    orders!: Order[];
 }

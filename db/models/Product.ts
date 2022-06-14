@@ -22,7 +22,6 @@ export class Product extends Model<Product, ProductCreateArgs> {
     @Column({
         type: DataTypes.UUID,
         primaryKey: true,
-        unique: true,
         defaultValue: DataTypes.UUID,
     })
     id!: string;
@@ -76,7 +75,7 @@ export class Product extends Model<Product, ProductCreateArgs> {
     // eslint-disable-next-line new-cap
     @ForeignKey(() => Seller)
     // eslint-disable-next-line new-cap
-    @Column({type: DataTypes.UUID})
+    @Column({type: DataTypes.UUID, unique: true})
     ownerId!: string;
 
     // eslint-disable-next-line new-cap

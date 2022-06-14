@@ -21,7 +21,6 @@ export class Seller extends Model<Seller, SellerCreateArgs> {
     @Column({
         type: DataTypes.UUID,
         primaryKey: true,
-        unique: true,
         defaultValue: DataTypes.UUID,
     })
     id!: string;
