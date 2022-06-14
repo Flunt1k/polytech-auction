@@ -1,7 +1,7 @@
 import {Column, Model, Table} from 'sequelize-typescript';
 import {DataTypes} from 'sequelize';
 
-export type CustomerCreateArgs = {
+export type SellerCreateArgs = {
     name: string;
     lastName: string;
     username: string;
@@ -11,8 +11,8 @@ export type CustomerCreateArgs = {
 };
 
 // eslint-disable-next-line new-cap
-@Table({tableName: 'Customer', createdAt: true, deletedAt: true, updatedAt: true})
-export class Customer extends Model<Customer, CustomerCreateArgs> {
+@Table({tableName: 'Seller', createdAt: true, deletedAt: true, updatedAt: true})
+export class Customer extends Model<Customer, SellerCreateArgs> {
     // eslint-disable-next-line new-cap
     @Column({
         type: DataTypes.UUIDV4,
