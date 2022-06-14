@@ -11,8 +11,8 @@ export type UserCreateArgs = {
 };
 
 // eslint-disable-next-line new-cap
-@Table({tableName: 'User', createdAt: true, deletedAt: true, updatedAt: true})
-export class User extends Model<User, UserCreateArgs> {
+@Table({tableName: 'Customer', createdAt: true, deletedAt: true, updatedAt: true})
+export class Customer extends Model<Customer, UserCreateArgs> {
     // eslint-disable-next-line new-cap
     @Column({
         type: DataTypes.UUIDV4,
