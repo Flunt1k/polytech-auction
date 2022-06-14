@@ -21,7 +21,7 @@ export class Order extends Model<Order, OrderCreateArgs> {
         type: DataTypes.UUID,
         primaryKey: true,
         unique: true,
-        defaultValue: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
     })
     id!: string;
 

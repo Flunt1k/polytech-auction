@@ -22,7 +22,7 @@ export class Product extends Model<Product, ProductCreateArgs> {
     @Column({
         type: DataTypes.UUID,
         primaryKey: true,
-        defaultValue: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
     })
     id!: string;
 

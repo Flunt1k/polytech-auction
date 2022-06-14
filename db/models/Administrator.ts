@@ -17,7 +17,7 @@ export class Administrator extends Model<Administrator, AdministratorCreateArgs>
         type: DataTypes.UUID,
         primaryKey: true,
         unique: true,
-        defaultValue: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
     })
     id!: string;
 
