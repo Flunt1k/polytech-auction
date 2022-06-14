@@ -1,17 +1,27 @@
-import {StringMap} from '../types/misc';
+import {HandlerType, RouterMap} from '../types/misc';
 
 export class BaseController {
-    paths: StringMap;
-    constructor(paths: StringMap) {
+    paths: RouterMap;
+    constructor(paths: RouterMap) {
         this.paths = paths;
     }
 
-    init(): {method: string; path: string}[] {
-        return Object.getOwnPropertyNames(this).map((v) => {
-            return {
-                method: v,
-                path: this.paths[v],
-            };
-        });
-    }
+    init = (): {method: any; path: string; handlerType: HandlerType}[] => {
+        Object.getOwnPropertyNames(this);
+        return Object.getOwnPropertyNames(this)
+            .map((v) => {
+                if (this.paths[v]) {
+                    const pathSettings = this.paths[v];
+
+                    return {
+                        // @ts-ignore
+                        method: this[v],
+                        handlerType: pathSettings[0],
+                        path: pathSettings[1],
+                    };
+                }
+                return null;
+            })
+            .filter(Boolean) as {method: any; path: string; handlerType: HandlerType}[];
+    };
 }
