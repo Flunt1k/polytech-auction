@@ -1,17 +1,19 @@
 import {Column, Model, Table} from 'sequelize-typescript';
 import {DataTypes} from 'sequelize';
 
-export type AdministratorCreateArgs = {
-    name: string;
-    lastName: string;
-    username: string;
-    password: string;
-    email: string;
+export type UserCreateArgs = {
+    productName: string;
+    imageLink: string;
+    description: string;
+    year: string;
+    buyInPrice?: number;
+    initialPrice?: number;
+    deadline?: string;
 };
 
 // eslint-disable-next-line new-cap
 @Table({tableName: 'Customer', createdAt: true, deletedAt: true, updatedAt: true})
-export class Customer extends Model<Customer, AdministratorCreateArgs> {
+export class Customer extends Model<Customer, UserCreateArgs> {
     // eslint-disable-next-line new-cap
     @Column({
         type: DataTypes.UUIDV4,
@@ -26,42 +28,44 @@ export class Customer extends Model<Customer, AdministratorCreateArgs> {
         type: DataTypes.STRING,
         allowNull: false,
     })
-    name!: string;
+    productName!: string;
 
     // eslint-disable-next-line new-cap
     @Column({
         type: DataTypes.STRING,
         allowNull: false,
     })
-    lastName!: string;
-
-    // eslint-disable-next-line new-cap
-    @Column({
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-    })
-    username!: string;
+    imageLink!: string;
 
     // eslint-disable-next-line new-cap
     @Column({
         type: DataTypes.STRING,
         allowNull: false,
     })
-    password!: string;
+    description!: string;
 
     // eslint-disable-next-line new-cap
     @Column({
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
     })
-    email!: string;
+    year!: string;
 
     // eslint-disable-next-line new-cap
     @Column({
-        type: DataTypes.BOOLEAN,
-        defaultValue: true,
+        type: DataTypes.DOUBLE,
     })
-    superuser!: string;
+    buyInPrice!: number;
+
+    // eslint-disable-next-line new-cap
+    @Column({
+        type: DataTypes.DOUBLE,
+    })
+    initialPrice!: number;
+
+    // eslint-disable-next-line new-cap
+    @Column({
+        type: DataTypes.DATE,
+    })
+    deadline!: string;
 }
