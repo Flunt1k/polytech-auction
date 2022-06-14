@@ -1,5 +1,6 @@
-import {Column, Model, Table} from 'sequelize-typescript';
+import {BelongsTo, Column, ForeignKey, Model, Table} from 'sequelize-typescript';
 import {DataTypes} from 'sequelize';
+import {Seller} from './Seller';
 
 export type ProductCreateArgs = {
     productName: string;
@@ -68,4 +69,14 @@ export class Product extends Model<Product, ProductCreateArgs> {
         type: DataTypes.DATE,
     })
     deadline!: string;
+
+    // eslint-disable-next-line new-cap
+    @ForeignKey(() => Seller)
+    // eslint-disable-next-line new-cap
+    @Column({type: DataTypes.STRING})
+    ownerId!: string;
+
+    // eslint-disable-next-line new-cap
+    @BelongsTo(() => Seller, 'ownerId')
+    owner!: Seller;
 }

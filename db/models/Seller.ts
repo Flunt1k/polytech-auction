@@ -1,5 +1,6 @@
-import {Column, Model, Table} from 'sequelize-typescript';
+import {Column, HasMany, Model, Table} from 'sequelize-typescript';
 import {DataTypes} from 'sequelize';
+import {Product} from './Product';
 
 export type SellerCreateArgs = {
     name: string;
@@ -73,4 +74,8 @@ export class Seller extends Model<Seller, SellerCreateArgs> {
         defaultValue: 0,
     })
     cash!: string;
+
+    // eslint-disable-next-line new-cap
+    @HasMany(() => Product, 'ownerId')
+    sellItems!: Product[];
 }
