@@ -14,10 +14,10 @@ export type AdministratorCreateArgs = {
 export class Administrator extends Model<Administrator, AdministratorCreateArgs> {
     // eslint-disable-next-line new-cap
     @Column({
-        type: DataTypes.UUIDV4,
+        type: DataTypes.UUID,
         primaryKey: true,
         unique: true,
-        defaultValue: DataTypes.UUIDV4,
+        defaultValue: DataTypes.UUID,
     })
     id!: string;
 
