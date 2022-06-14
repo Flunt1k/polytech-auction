@@ -12,7 +12,7 @@ export type SellerCreateArgs = {
 
 // eslint-disable-next-line new-cap
 @Table({tableName: 'Seller', createdAt: true, deletedAt: true, updatedAt: true})
-export class Customer extends Model<Customer, SellerCreateArgs> {
+export class Seller extends Model<Seller, SellerCreateArgs> {
     // eslint-disable-next-line new-cap
     @Column({
         type: DataTypes.UUIDV4,

@@ -1,5 +1,6 @@
 import fs from 'fs';
-import {Sequelize} from 'sequelize';
+import path from 'path';
+import {Sequelize} from 'sequelize-typescript';
 import mySQLModule from 'mysql2';
 import SECRETS from '../secrets';
 
@@ -16,6 +17,7 @@ const sequelize = new Sequelize({
     database: SECRETS.DB_NAME,
     username: SECRETS.DB_USER,
     password: SECRETS.DB_PASSWORD,
+    models: [path.resolve(__dirname, 'models')],
 });
 
 export default sequelize;

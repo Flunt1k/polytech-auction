@@ -11,7 +11,7 @@ export type AdministratorCreateArgs = {
 
 // eslint-disable-next-line new-cap
 @Table({tableName: 'Customer', createdAt: true, deletedAt: true, updatedAt: true})
-export class Customer extends Model<Customer, AdministratorCreateArgs> {
+export class Administrator extends Model<Administrator, AdministratorCreateArgs> {
     // eslint-disable-next-line new-cap
     @Column({
         type: DataTypes.UUIDV4,
