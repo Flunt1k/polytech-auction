@@ -1,0 +1,68 @@
+import {Column, HasOne, Model, Table} from 'sequelize-typescript';
+import {DataTypes} from 'sequelize';
+import {Product} from './Product';
+import {Customer} from './Customer';
+import {Seller} from './Seller';
+
+export type OrderCreateArgs = {
+    sellerId: string;
+    customerId: string;
+    productId: string;
+    phone: string;
+    email: string;
+    deliveryAddress: string;
+};
+
+// eslint-disable-next-line new-cap
+@Table({tableName: 'Order', createdAt: true, deletedAt: true, updatedAt: true})
+export class Order extends Model<Order, OrderCreateArgs> {
+    // eslint-disable-next-line new-cap
+    @Column({
+        type: DataTypes.UUIDV4,
+        primaryKey: true,
+        unique: true,
+        defaultValue: DataTypes.UUIDV4,
+    })
+    id!: string;
+
+    // eslint-disable-next-line new-cap
+    @Column({
+        type: DataTypes.INTEGER,
+        unique: true,
+        autoIncrement: true,
+    })
+    orderNumber!: number;
+
+    // eslint-disable-next-line new-cap
+    @Column({
+        type: DataTypes.STRING,
+        allowNull: false,
+    })
+    phone!: string;
+
+    // eslint-disable-next-line new-cap
+    @Column({
+        type: DataTypes.STRING,
+        allowNull: false,
+    })
+    email!: string;
+
+    // eslint-disable-next-line new-cap
+    @Column({
+        type: DataTypes.STRING,
+        allowNull: false,
+    })
+    deliveryAddress!: string;
+
+    // eslint-disable-next-line new-cap
+    @HasOne(() => Product, 'id')
+    productId!: string;
+
+    // eslint-disable-next-line new-cap
+    @HasOne(() => Customer, 'id')
+    customerId!: string;
+
+    // eslint-disable-next-line new-cap
+    @HasOne(() => Seller, 'id')
+    sellerId!: string;
+}

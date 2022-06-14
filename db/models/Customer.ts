@@ -1,5 +1,6 @@
-import {Column, Model, Table} from 'sequelize-typescript';
+import {Column, ForeignKey, Model, Table} from 'sequelize-typescript';
 import {DataTypes} from 'sequelize';
+import {Order} from './Order';
 
 export type CustomerCreateArgs = {
     name: string;
@@ -13,6 +14,8 @@ export type CustomerCreateArgs = {
 // eslint-disable-next-line new-cap
 @Table({tableName: 'Customer', createdAt: true, deletedAt: true, updatedAt: true})
 export class Customer extends Model<Customer, CustomerCreateArgs> {
+    // eslint-disable-next-line new-cap
+    @ForeignKey(() => Order)
     // eslint-disable-next-line new-cap
     @Column({
         type: DataTypes.UUIDV4,

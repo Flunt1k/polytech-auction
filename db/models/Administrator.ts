@@ -10,7 +10,7 @@ export type AdministratorCreateArgs = {
 };
 
 // eslint-disable-next-line new-cap
-@Table({tableName: 'Customer', createdAt: true, deletedAt: true, updatedAt: true})
+@Table({tableName: 'Administrator', createdAt: true, deletedAt: true, updatedAt: true})
 export class Administrator extends Model<Administrator, AdministratorCreateArgs> {
     // eslint-disable-next-line new-cap
     @Column({
