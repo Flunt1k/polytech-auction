@@ -18,10 +18,10 @@ export type OrderCreateArgs = {
 export class Order extends Model<Order, OrderCreateArgs> {
     // eslint-disable-next-line new-cap
     @Column({
-        type: DataTypes.UUIDV4,
+        type: DataTypes.UUID,
         primaryKey: true,
         unique: true,
-        defaultValue: DataTypes.UUIDV4,
+        defaultValue: DataTypes.UUID,
     })
     id!: string;
 

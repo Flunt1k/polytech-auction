@@ -12,16 +12,22 @@ export type CustomerCreateArgs = {
 };
 
 // eslint-disable-next-line new-cap
-@Table({tableName: 'Customer', createdAt: true, deletedAt: true, updatedAt: true})
+@Table({
+    tableName: 'Customer',
+    createdAt: true,
+    deletedAt: true,
+    updatedAt: true,
+    freezeTableName: true,
+})
 export class Customer extends Model<Customer, CustomerCreateArgs> {
     // eslint-disable-next-line new-cap
     @ForeignKey(() => Order)
     // eslint-disable-next-line new-cap
     @Column({
-        type: DataTypes.UUIDV4,
+        type: DataTypes.UUID,
         primaryKey: true,
         unique: true,
-        defaultValue: DataTypes.UUIDV4,
+        defaultValue: DataTypes.UUID,
     })
     id!: string;
 
