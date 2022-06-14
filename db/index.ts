@@ -1,17 +1,30 @@
 import fs from 'fs';
-import mysql from 'mysql2';
+import {Sequelize} from 'sequelize';
+import mySQLModule from 'mysql2';
 import SECRETS from '../secrets';
 
 export const initDataBase = async () => {
-    const connection = mysql.createConnection({
+    const sequelize = new Sequelize({
+        dialect: 'mysql',
+        dialectModule: mySQLModule,
+        dialectOptions: {
+            ssl: {
+                ca: fs.readFileSync(SECRETS.SERT_PATH) as unknown as string,
+            },
+        },
         host: SECRETS.DB_HOSTNAME,
         port: SECRETS.DB_PORT,
-        user: SECRETS.DB_USER,
-        password: SECRETS.DB_PASSWORD,
         database: SECRETS.DB_NAME,
-        ssl: {
-            ca: fs.readFileSync(SECRETS.SERT_PATH) as unknown as string,
-        },
+        username: SECRETS.DB_USER,
+        password: SECRETS.DB_PASSWORD,
     });
-    await connection.connect();
+
+    try {
+        await sequelize.authenticate();
+        console.log('Connection has been established successfully.');
+    } catch (error) {
+        console.error('Unable to connect to the database:', error);
+    }
+
+    return sequelize;
 };
