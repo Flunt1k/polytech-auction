@@ -1,4 +1,4 @@
-import {Column, ForeignKey, Model, Table} from 'sequelize-typescript';
+import {Column, ForeignKey, HasMany, Model, Table} from 'sequelize-typescript';
 import {DataTypes} from 'sequelize';
 import {Order} from './Order';
 
@@ -12,15 +12,20 @@ export type CustomerCreateArgs = {
 };
 
 // eslint-disable-next-line new-cap
-@Table({tableName: 'Customer', createdAt: true, deletedAt: true, updatedAt: true})
+@Table({
+    tableName: 'Customer',
+    createdAt: true,
+    deletedAt: true,
+    updatedAt: true,
+    freezeTableName: true,
+})
 export class Customer extends Model<Customer, CustomerCreateArgs> {
     // eslint-disable-next-line new-cap
     @ForeignKey(() => Order)
     // eslint-disable-next-line new-cap
     @Column({
-        type: DataTypes.UUIDV4,
+        type: DataTypes.UUID,
         primaryKey: true,
-        unique: true,
         defaultValue: DataTypes.UUIDV4,
     })
     id!: string;
@@ -76,4 +81,8 @@ export class Customer extends Model<Customer, CustomerCreateArgs> {
         defaultValue: 0,
     })
     cash!: string;
+
+    // eslint-disable-next-line new-cap
+    @HasMany(() => Order, 'customerId')
+    orders!: Order[];
 }

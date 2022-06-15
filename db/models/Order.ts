@@ -1,4 +1,4 @@
-import {Column, HasOne, Model, Table} from 'sequelize-typescript';
+import {BelongsTo, Column, ForeignKey, HasOne, Model, Table} from 'sequelize-typescript';
 import {DataTypes} from 'sequelize';
 import {Product} from './Product';
 import {Customer} from './Customer';
@@ -18,7 +18,7 @@ export type OrderCreateArgs = {
 export class Order extends Model<Order, OrderCreateArgs> {
     // eslint-disable-next-line new-cap
     @Column({
-        type: DataTypes.UUIDV4,
+        type: DataTypes.UUID,
         primaryKey: true,
         unique: true,
         defaultValue: DataTypes.UUIDV4,
@@ -59,8 +59,14 @@ export class Order extends Model<Order, OrderCreateArgs> {
     productId!: string;
 
     // eslint-disable-next-line new-cap
-    @HasOne(() => Customer, 'id')
+    @ForeignKey(() => Customer)
+    // eslint-disable-next-line new-cap
+    @Column({type: DataTypes.UUID})
     customerId!: string;
+
+    // eslint-disable-next-line new-cap
+    @BelongsTo(() => Customer, 'customerId')
+    customer!: Customer;
 
     // eslint-disable-next-line new-cap
     @HasOne(() => Seller, 'id')
