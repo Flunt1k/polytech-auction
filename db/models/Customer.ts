@@ -83,6 +83,6 @@ export class Customer extends Model<Customer, CustomerCreateArgs> {
     cash!: string;
 
     // eslint-disable-next-line new-cap
-    @HasMany(() => Order, 'id')
+    @HasMany(() => Order, 'customerId')
     orders!: Order[];
 }

@@ -11,12 +11,16 @@ export class CustomerServiceImpl implements CustomerService {
         }
     }
 
-    async update(customerId: string, updateArgs: Partial<Omit<Customer, 'id'>>): Promise<Customer> {
+    async update(
+        customerId: string,
+        updateArgs: Partial<Omit<Customer, 'id'>>,
+    ): Promise<Customer | null> {
         try {
-            return (await Customer.update(updateArgs, {
+            await Customer.update(updateArgs, {
                 where: {id: customerId},
-                returning: true,
-            })) as unknown as Customer;
+            });
+
+            return Customer.findByPk(customerId);
         } catch (e: any) {
             throw new Error(e);
         }

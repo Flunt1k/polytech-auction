@@ -17,6 +17,7 @@ routes(app, [
         path: 'customer',
         subPaths: {
             create: ['post', '/'],
+            update: ['patch', '/'],
         },
         Controller: CustomerController,
     },

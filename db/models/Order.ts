@@ -61,11 +61,11 @@ export class Order extends Model<Order, OrderCreateArgs> {
     // eslint-disable-next-line new-cap
     @ForeignKey(() => Customer)
     // eslint-disable-next-line new-cap
-    @Column({type: DataTypes.UUID, unique: true})
+    @Column({type: DataTypes.UUID})
     customerId!: string;
 
     // eslint-disable-next-line new-cap
-    @BelongsTo(() => Customer)
+    @BelongsTo(() => Customer, 'customerId')
     customer!: Customer;
 
     // eslint-disable-next-line new-cap
