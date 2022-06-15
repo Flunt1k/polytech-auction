@@ -19,7 +19,17 @@ export default function (app: Express, args: RoutesConfig[]) {
         controllerSettings.forEach((settings) => {
             const {handlerType, method, path} = settings;
 
-            router[handlerType](path, method);
+            router[handlerType](path, (req, res) => {
+                try {
+                    method(req, res);
+                } catch (err: any) {
+                    res.status(500).json({
+                        message: 'Internal server error',
+                        code: 500,
+                        debug: {err},
+                    });
+                }
+            });
         });
 
         app.use(`/api/${path}`, router);
