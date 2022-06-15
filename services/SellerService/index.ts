@@ -1,6 +1,9 @@
 import {SellerService} from './types';
 import {Seller, SellerCreateArgs} from '../../db/models/Seller';
 import {Op} from 'sequelize';
+import {ModelStatic} from 'sequelize-typescript';
+import {Order} from '../../db/models/Order';
+import {Product} from '../../db/models/Product';
 
 export class SellerServiceImpl implements SellerService {
     async create(args: SellerCreateArgs): Promise<Seller> {
@@ -39,8 +42,24 @@ export class SellerServiceImpl implements SellerService {
             });
     }
 
-    async getById(sellerId: string): Promise<Seller | null> {
-        return Seller.findByPk(sellerId)
+    async getById(
+        sellerId: string,
+        includeOrders?: boolean,
+        includeProduct?: boolean,
+    ): Promise<Seller | null> {
+        const searchOptions = {} as {include?: ModelStatic[]};
+
+        if (includeOrders) {
+            searchOptions.include = [Order];
+        }
+
+        if (includeProduct) {
+            searchOptions.include = Array.isArray(searchOptions.include)
+                ? [...searchOptions.include, Product]
+                : [Product];
+        }
+
+        return Seller.findByPk(sellerId, searchOptions)
             .then((res) => res)
             .catch((err) => {
                 throw new Error(err);

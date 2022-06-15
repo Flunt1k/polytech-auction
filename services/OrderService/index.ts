@@ -1,5 +1,7 @@
 import {OrderService} from './types';
 import {Order, OrderCreateArgs} from '../../db/models/Order';
+import {Customer} from '../../db/models/Customer';
+import {Seller} from '../../db/models/Seller';
 
 export class OrderServiceImpl implements OrderService {
     async create(args: OrderCreateArgs): Promise<Order> {
@@ -27,7 +29,7 @@ export class OrderServiceImpl implements OrderService {
     }
 
     getByCustomerId(customerId: string): Promise<Order | null> {
-        return Order.findOne({where: {customerId}})
+        return Order.findOne({where: {customerId}, include: [Customer]})
             .then((res) => res)
             .catch((err) => {
                 throw new Error(err);
@@ -51,7 +53,7 @@ export class OrderServiceImpl implements OrderService {
     }
 
     getBySellerId(sellerId: string): Promise<Order | null> {
-        return Order.findOne({where: {sellerId}})
+        return Order.findOne({where: {sellerId}, include: [Seller]})
             .then((res) => res)
             .catch((err) => {
                 throw new Error(err);

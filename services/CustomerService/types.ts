@@ -4,8 +4,8 @@ export interface CustomerService {
     create: (arg: CustomerCreateArgs) => Promise<Customer>;
     update: (customerId: string, updateArgs: Partial<Customer>) => Promise<Customer | null>;
     delete: (customerId: string) => Promise<boolean>;
-    getById: (customerId: string) => Promise<Customer | null>;
-    getByEmail: (email: string) => Promise<Customer | null>;
+    getById: (customerId: string, include?: boolean) => Promise<Customer | null>;
+    getByEmail: (email: string, include?: boolean) => Promise<Customer | null>;
     getByIds: (customerIds: string[]) => Promise<Customer[]>;
     getAll: () => Promise<Customer[]>;
 }

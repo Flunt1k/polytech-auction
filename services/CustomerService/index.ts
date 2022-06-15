@@ -1,6 +1,8 @@
 import {CustomerService} from './types';
 import {Customer, CustomerCreateArgs} from '../../db/models/Customer';
 import {Op} from 'sequelize';
+import {ModelStatic} from 'sequelize-typescript';
+import {Order} from '../../db/models/Order';
 
 export class CustomerServiceImpl implements CustomerService {
     async create(args: CustomerCreateArgs): Promise<Customer> {
@@ -36,8 +38,13 @@ export class CustomerServiceImpl implements CustomerService {
             });
     }
 
-    async getById(customerId: string): Promise<Customer | null> {
-        return Customer.findByPk(customerId)
+    async getById(customerId: string, include?: boolean): Promise<Customer | null> {
+        const searchOptions = {} as {include?: ModelStatic[]};
+
+        if (include) {
+            searchOptions.include = [Order];
+        }
+        return Customer.findByPk(customerId, searchOptions)
             .then((res) => {
                 return res;
             })
@@ -46,8 +53,14 @@ export class CustomerServiceImpl implements CustomerService {
             });
     }
 
-    async getByEmail(email: string): Promise<Customer | null> {
-        return Customer.findOne({where: {email}})
+    async getByEmail(email: string, include?: boolean): Promise<Customer | null> {
+        const searchOptions = {where: {email}} as {where: {email: string}; include?: ModelStatic[]};
+
+        if (include) {
+            searchOptions.include = [Order];
+        }
+
+        return Customer.findOne(searchOptions)
             .then((res) => {
                 return res;
             })
