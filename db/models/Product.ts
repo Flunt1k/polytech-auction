@@ -17,8 +17,6 @@ export type ProductCreateArgs = {
 @Table({tableName: 'Product', createdAt: true, deletedAt: true, updatedAt: true})
 export class Product extends Model<Product, ProductCreateArgs> {
     // eslint-disable-next-line new-cap
-    @ForeignKey(() => Order)
-    // eslint-disable-next-line new-cap
     @Column({
         type: DataTypes.UUID,
         primaryKey: true,
@@ -79,6 +77,12 @@ export class Product extends Model<Product, ProductCreateArgs> {
     ownerId!: string;
 
     // eslint-disable-next-line new-cap
-    @BelongsTo(() => Seller, 'ownerId')
-    owner!: Seller;
+    @BelongsTo(() => Order, 'orderId')
+    order!: Order;
+
+    // eslint-disable-next-line new-cap
+    @ForeignKey(() => Order)
+    // eslint-disable-next-line new-cap
+    @Column({type: DataTypes.UUID, unique: true})
+    orderId!: string;
 }

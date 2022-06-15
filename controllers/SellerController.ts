@@ -70,17 +70,21 @@ export class SellerController extends BaseController {
     };
 
     getSeller = async (req: Request, res: Response) => {
-        const {sellerId, sellerIds, email} = req.query as {
+        const {sellerId, sellerIds, email, includeProducts, includeOrders} = req.query as {
             sellerId?: string;
             email?: string;
             sellerIds?: string[] | string;
+            includeOrders?: number;
+            includeProducts?: number;
         };
-
-        console.log(sellerIds);
 
         try {
             if (sellerId || (sellerIds && typeof sellerIds === 'string')) {
-                const seller = await this.sellerService.getById(sellerId || (sellerIds as string));
+                const seller = await this.sellerService.getById(
+                    sellerId || (sellerIds as string),
+                    Boolean(includeOrders),
+                    Boolean(includeProducts),
+                );
 
                 if (seller) {
                     res.status(200).json({data: {seller}});

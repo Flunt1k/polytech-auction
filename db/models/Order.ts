@@ -55,10 +55,6 @@ export class Order extends Model<Order, OrderCreateArgs> {
     deliveryAddress!: string;
 
     // eslint-disable-next-line new-cap
-    @HasOne(() => Product, 'id')
-    productId!: string;
-
-    // eslint-disable-next-line new-cap
     @ForeignKey(() => Customer)
     // eslint-disable-next-line new-cap
     @Column({type: DataTypes.UUID})
@@ -77,4 +73,8 @@ export class Order extends Model<Order, OrderCreateArgs> {
     // eslint-disable-next-line new-cap
     @BelongsTo(() => Seller, 'sellerId')
     seller!: Seller;
+
+    // eslint-disable-next-line new-cap
+    @HasOne(() => Product, 'orderId')
+    product!: Product;
 }

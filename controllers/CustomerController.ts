@@ -70,18 +70,18 @@ export class CustomerController extends BaseController {
     };
 
     getCustomer = async (req: Request, res: Response) => {
-        const {customerId, customerIds, email} = req.query as {
+        const {customerId, customerIds, email, include} = req.query as {
             customerId?: string;
             email?: string;
             customerIds?: string[] | string;
+            include?: number;
         };
-
-        console.log(customerIds);
 
         try {
             if (customerId || (customerIds && typeof customerIds === 'string')) {
                 const customer = await this.customerService.getById(
                     customerId || (customerIds as string),
+                    Boolean(include),
                 );
 
                 if (customer) {
@@ -92,7 +92,7 @@ export class CustomerController extends BaseController {
                     });
                 }
             } else if (email) {
-                const customer = await this.customerService.getByEmail(email);
+                const customer = await this.customerService.getByEmail(email, Boolean(include));
 
                 if (customer) {
                     res.status(200).json({data: {customer}});
