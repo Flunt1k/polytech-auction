@@ -31,19 +31,23 @@ export class ProductServiceImpl implements ProductService {
         const {limit, offset, includeOrder, includeOwner} = args;
 
         const searchOptions = {limit, offset} as {
-            include?: ModelStatic[];
+            include?: any;
             limit?: number;
             offset?: number;
         };
 
-        if (includeOrder) {
-            searchOptions.include = [Order, Customer];
-        }
+        if (includeOwner && includeOrder) {
+            searchOptions.include = {all: true, nested: true};
+        } else {
+            if (includeOrder) {
+                searchOptions.include = [{model: Order, nested: true}];
+            }
 
-        if (includeOwner) {
-            searchOptions.include = Array.isArray(searchOptions.include)
-                ? [...searchOptions.include, Seller]
-                : [Seller];
+            if (includeOwner) {
+                searchOptions.include = Array.isArray(searchOptions.include)
+                    ? [...searchOptions.include, {model: Seller}]
+                    : [Seller];
+            }
         }
 
         return Product.findAll(searchOptions)

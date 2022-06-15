@@ -65,11 +65,26 @@ export class OrderController extends BaseController {
     };
 
     getOrder = async (req: Request, res: Response) => {
-        const {orderId, customerIdAll, customerId, sellerId} = req.query as {
+        const {
+            orderId,
+            customerIdAll,
+            customerId,
+            sellerId,
+            includeCustomer,
+            includeSeller,
+            includeProduct,
+            limit,
+            offset,
+        } = req.query as {
             orderId?: string;
             customerId?: string;
             customerIdAll?: string;
             sellerId?: string;
+            includeCustomer?: number;
+            includeSeller?: number;
+            includeProduct?: number;
+            limit?: number;
+            offset?: number;
         };
 
         try {
@@ -102,7 +117,13 @@ export class OrderController extends BaseController {
                     res.status(404).json({data: {message: 'Заказ не найден', status: 'failed'}});
                 }
             } else {
-                const orders = await this.orderService.getAll();
+                const orders = await this.orderService.getAll(
+                    Boolean(includeCustomer),
+                    Boolean(includeSeller),
+                    Boolean(includeProduct),
+                    limit,
+                    offset,
+                );
 
                 res.status(200).json({data: {orders}});
             }

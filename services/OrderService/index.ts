@@ -2,6 +2,8 @@ import {OrderService} from './types';
 import {Order, OrderCreateArgs} from '../../db/models/Order';
 import {Customer} from '../../db/models/Customer';
 import {Seller} from '../../db/models/Seller';
+import {ModelStatic} from 'sequelize-typescript';
+import {Product} from '../../db/models/Product';
 
 export class OrderServiceImpl implements OrderService {
     async create(args: OrderCreateArgs): Promise<Order> {
@@ -20,8 +22,36 @@ export class OrderServiceImpl implements OrderService {
             });
     }
 
-    getAll(): Promise<Order[]> {
-        return Order.findAll()
+    getAll(
+        includeCustomer?: boolean,
+        includeSeller?: boolean,
+        includeProduct?: boolean,
+        limit?: number,
+        offset?: number,
+    ): Promise<Order[]> {
+        const searchOptions = {limit, offset} as {
+            include?: ModelStatic[];
+            limit?: number;
+            offset?: number;
+        };
+
+        if (includeCustomer) {
+            searchOptions.include = [Customer];
+        }
+
+        if (includeSeller) {
+            searchOptions.include = Array.isArray(searchOptions.include)
+                ? [...searchOptions.include, Seller]
+                : [Seller];
+        }
+
+        if (includeProduct) {
+            searchOptions.include = Array.isArray(searchOptions.include)
+                ? [...searchOptions.include, Product]
+                : [Product];
+        }
+
+        return Order.findAll(searchOptions)
             .then((res) => res)
             .catch((err) => {
                 throw new Error(err);
@@ -29,7 +59,7 @@ export class OrderServiceImpl implements OrderService {
     }
 
     getByCustomerId(customerId: string): Promise<Order | null> {
-        return Order.findOne({where: {customerId}, include: [Customer]})
+        return Order.findOne({where: {customerId}, include: [Customer, Product, Seller]})
             .then((res) => res)
             .catch((err) => {
                 throw new Error(err);
@@ -37,7 +67,7 @@ export class OrderServiceImpl implements OrderService {
     }
 
     getAllByCustomerId(customerId: string): Promise<Order[]> {
-        return Order.findAll({where: {customerId}})
+        return Order.findAll({where: {customerId}, include: [Customer, Product, Seller]})
             .then((res) => res)
             .catch((err) => {
                 throw new Error(err);
@@ -45,7 +75,7 @@ export class OrderServiceImpl implements OrderService {
     }
 
     getById(orderId: string): Promise<Order | null> {
-        return Order.findByPk(orderId)
+        return Order.findByPk(orderId, {include: [Customer, Product, Seller]})
             .then((res) => res)
             .catch((err) => {
                 throw new Error(err);

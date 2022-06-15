@@ -8,5 +8,11 @@ export interface OrderService {
     getBySellerId: (sellerId: string) => Promise<Order | null>;
     getByCustomerId: (customerId: string) => Promise<Order | null>;
     getAllByCustomerId: (customerId: string) => Promise<Order[]>;
-    getAll: () => Promise<Order[]>;
+    getAll: (
+        includeCustomer?: boolean,
+        includeSeller?: boolean,
+        includeProduct?: boolean,
+        limit?: number,
+        offset?: number,
+    ) => Promise<Order[]>;
 }
