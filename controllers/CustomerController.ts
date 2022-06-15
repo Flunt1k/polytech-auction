@@ -16,7 +16,7 @@ export class CustomerController extends BaseController {
         const body = req.body as CustomerCreateArgs;
         const customer = await this.customerService.create(body);
 
-        res.status(201).json(customer);
+        res.status(201).json({data: {customer}});
     };
 
     update = async (req: Request, res: Response) => {
@@ -26,10 +26,41 @@ export class CustomerController extends BaseController {
 
         if (updatedCustomer === null) {
             res.status(404).json({
-                message: 'Пользователь не найден',
+                data: {
+                    message: 'Пользователь не найден',
+                    status: 'failed',
+                },
             });
         }
 
-        res.status(200).json(updatedCustomer);
+        res.status(200).json({data: {customer: updatedCustomer}});
+    };
+
+    delete = async (req: Request, res: Response) => {
+        const {customerId} = req.body as {customerId: string};
+
+        const isUserDeleted = await this.customerService.delete(customerId);
+
+        if (isUserDeleted) {
+            res.status(200).json({
+                data: {message: 'Пользователь удален', deleted: true, status: 'success'},
+            });
+        } else {
+            res.status(404).json({
+                data: {message: 'Пользователь не найден в базе', deleted: false, status: 'failed'},
+            });
+        }
+    };
+
+    getById = async (req: Request, res: Response) => {
+        const {customerId} = req.query as {customerId?: string};
+
+        const customer = await this.customerService.getById(customerId || '');
+
+        if (customer) {
+            res.status(200).json({data: {customer}});
+        } else {
+            res.status(404).json({data: {message: 'Пользователь с таким id не найден'}});
+        }
     };
 }

@@ -17,11 +17,10 @@ export default function (app: Express, args: RoutesConfig[]) {
         const controllerSettings = controller.init();
 
         controllerSettings.forEach((settings) => {
-            const {handlerType, method, path} = settings;
-
-            router[handlerType](path, (req, res) => {
+            router[settings.handlerType](settings.path, (req, res) => {
                 try {
-                    method(req, res);
+                    settings.method(req, res);
+                    res.end();
                 } catch (err: any) {
                     res.status(500).json({
                         message: 'Internal server error',

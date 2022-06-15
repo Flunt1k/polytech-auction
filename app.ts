@@ -18,6 +18,8 @@ routes(app, [
         subPaths: {
             create: ['post', '/'],
             update: ['patch', '/'],
+            delete: ['delete', '/'],
+            getById: ['get', '/?:customerId'],
         },
         Controller: CustomerController,
     },

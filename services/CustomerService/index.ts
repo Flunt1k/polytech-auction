@@ -28,8 +28,8 @@ export class CustomerServiceImpl implements CustomerService {
 
     async delete(customerId: string): Promise<boolean> {
         return Customer.destroy({where: {id: customerId}})
-            .then(() => {
-                return true;
+            .then((res) => {
+                return res >= 1;
             })
             .catch((e) => {
                 throw new Error(e);
