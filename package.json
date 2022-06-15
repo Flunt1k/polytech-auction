@@ -4,6 +4,8 @@
   "description": "## How to start",
   "main": "index.js",
   "scripts": {
+    "seed": "ts-node scripts/seed.ts",
+    "drop": "ts-node scripts/drop_db.ts",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "client": "echo \"Client Started\"",
     "server": "nodemon index.ts",
