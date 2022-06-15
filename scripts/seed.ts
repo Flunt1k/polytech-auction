@@ -2,6 +2,7 @@ import {Customer} from '../db/models/Customer';
 import {Seller} from '../db/models/Seller';
 import {Order} from '../db/models/Order';
 import '../db';
+import {Product} from '../db/models/Product';
 
 const createCustomer = () => {
     return (
@@ -35,7 +36,22 @@ const createSeller = () => {
     );
 };
 
-const createOrder = (customerId: string, sellerId: string) => {
+const createProduct = (sellerId: string) => {
+    return Product.create({
+        productName: 'Test_Product',
+        imageLink: 'IMAGE_LINK',
+        description: 'Test_Description',
+        year: '2021',
+        buyInPrice: 10200,
+        initialPrice: 6000,
+        deadline: '07-11-2022',
+        ownerId: sellerId,
+    })
+        .then((res) => res)
+        .catch((err) => console.log(err));
+};
+
+const createOrder = (customerId: string, sellerId: string, productId: string) => {
     return (
         Order.create({
             customerId,
@@ -43,9 +59,22 @@ const createOrder = (customerId: string, sellerId: string) => {
             phone: '89009998877',
             email: 'test_order@gmail.com',
             deliveryAddress: 'Order_City',
-            productId: '',
+            productId: productId,
+            isBuyIn: false,
+            bet: 7000,
         })
-            .then((res: Order) => res)
+            .then(() => {
+                return Order.create({
+                    customerId,
+                    sellerId,
+                    phone: '89009998833',
+                    email: 'test_order2@gmail.com',
+                    deliveryAddress: 'Order_City',
+                    productId: productId,
+                    isBuyIn: true,
+                    bet: 10200,
+                });
+            })
             // eslint-disable-next-line no-console
             .catch((err: any) => console.log(err))
     );
@@ -56,7 +85,10 @@ const seedDataBase = async () => {
     const seller = await createSeller();
 
     if (customer && seller) {
-        await createOrder(customer.id, seller.id);
+        const product = await createProduct(seller.id);
+        if (product) {
+            await createOrder(customer.id, seller.id, product.id);
+        }
     }
 };
 
