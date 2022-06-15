@@ -30,7 +30,7 @@ routes(app, [
             create: ['post', '/'],
             update: ['patch', '/'],
             delete: ['delete', '/'],
-            getCustomer: ['get', '/'],
+            getSeller: ['get', '/'],
         },
         Controller: SellerController,
     },
