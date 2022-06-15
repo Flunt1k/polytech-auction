@@ -10,8 +10,8 @@ export interface ProductService {
         includeOrder: boolean;
     }) => Promise<Product | null>;
     getAll: (args: {
-        limit: number;
-        offset: number;
+        limit?: number;
+        offset?: number;
         includeOwner: boolean;
         includeOrder: boolean;
     }) => Promise<Product[]>;
