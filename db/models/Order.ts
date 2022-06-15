@@ -11,6 +11,8 @@ export type OrderCreateArgs = {
     phone: string;
     email: string;
     deliveryAddress: string;
+    isBuyIn: boolean;
+    bet: number;
 };
 
 // eslint-disable-next-line new-cap
@@ -53,6 +55,20 @@ export class Order extends Model<Order, OrderCreateArgs> {
         allowNull: false,
     })
     deliveryAddress!: string;
+
+    // eslint-disable-next-line new-cap
+    @Column({
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+    })
+    isBuyIn!: boolean;
+
+    // eslint-disable-next-line new-cap
+    @Column({
+        type: DataTypes.DOUBLE,
+        allowNull: false,
+    })
+    bet!: number;
 
     // eslint-disable-next-line new-cap
     @ForeignKey(() => Customer)

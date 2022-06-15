@@ -1,4 +1,4 @@
-import {BelongsTo, Column, ForeignKey, HasOne, Model, Table} from 'sequelize-typescript';
+import {BelongsTo, Column, ForeignKey, HasMany, Model, Table} from 'sequelize-typescript';
 import {DataTypes} from 'sequelize';
 import {Seller} from './Seller';
 import {Order} from './Order';
@@ -82,6 +82,6 @@ export class Product extends Model<Product, ProductCreateArgs> {
     owner!: Seller;
 
     // eslint-disable-next-line new-cap
-    @HasOne(() => Order, 'productId')
+    @HasMany(() => Order, 'productId')
     order!: Order;
 }
