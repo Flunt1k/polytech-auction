@@ -46,6 +46,16 @@ export class CustomerServiceImpl implements CustomerService {
             });
     }
 
+    async getByEmail(email: string): Promise<Customer | null> {
+        return Customer.findOne({where: {email}})
+            .then((res) => {
+                return res;
+            })
+            .catch((err: any) => {
+                throw new Error(err);
+            });
+    }
+
     async getByIds(customerIds: string[]): Promise<Customer[]> {
         return Customer.findAll({
             where: {
@@ -57,6 +67,14 @@ export class CustomerServiceImpl implements CustomerService {
             .then((res) => {
                 return res;
             })
+            .catch((err: any) => {
+                throw new Error(err);
+            });
+    }
+
+    async getAll(): Promise<Customer[]> {
+        return Customer.findAll()
+            .then((res) => res)
             .catch((err: any) => {
                 throw new Error(err);
             });

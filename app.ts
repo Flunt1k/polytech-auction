@@ -19,7 +19,7 @@ routes(app, [
             create: ['post', '/'],
             update: ['patch', '/'],
             delete: ['delete', '/'],
-            getById: ['get', '/?:customerId'],
+            getCustomer: ['get', '/'],
         },
         Controller: CustomerController,
     },

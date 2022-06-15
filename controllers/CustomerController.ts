@@ -14,53 +14,114 @@ export class CustomerController extends BaseController {
 
     create = async (req: Request, res: Response) => {
         const body = req.body as CustomerCreateArgs;
-        const customer = await this.customerService.create(body);
+        try {
+            const customer = await this.customerService.create(body);
 
-        res.status(201).json({data: {customer}});
+            res.status(201).json({data: {customer}});
+        } catch (err: any) {
+            throw new Error(err);
+        }
     };
 
     update = async (req: Request, res: Response) => {
         const body = req.body as {customerId: string; updateData: Partial<Customer>};
         const {customerId, updateData} = body;
-        const updatedCustomer = await this.customerService.update(customerId, updateData);
+        try {
+            const updatedCustomer = await this.customerService.update(customerId, updateData);
 
-        if (updatedCustomer === null) {
-            res.status(404).json({
-                data: {
-                    message: 'Пользователь не найден',
-                    status: 'failed',
-                },
-            });
+            if (updatedCustomer === null) {
+                res.status(404).json({
+                    data: {
+                        message: 'Пользователь не найден',
+                        status: 'failed',
+                    },
+                });
+                return;
+            }
+
+            res.status(200).json({data: {customer: updatedCustomer}});
+        } catch (err: any) {
+            throw new Error(err);
         }
-
-        res.status(200).json({data: {customer: updatedCustomer}});
     };
 
     delete = async (req: Request, res: Response) => {
         const {customerId} = req.body as {customerId: string};
 
-        const isUserDeleted = await this.customerService.delete(customerId);
+        try {
+            const isUserDeleted = await this.customerService.delete(customerId);
 
-        if (isUserDeleted) {
-            res.status(200).json({
-                data: {message: 'Пользователь удален', deleted: true, status: 'success'},
-            });
-        } else {
-            res.status(404).json({
-                data: {message: 'Пользователь не найден в базе', deleted: false, status: 'failed'},
-            });
+            if (isUserDeleted) {
+                res.status(200).json({
+                    data: {message: 'Пользователь удален', deleted: true, status: 'success'},
+                });
+            } else {
+                res.status(404).json({
+                    data: {
+                        message: 'Пользователь не найден в базе',
+                        deleted: false,
+                        status: 'failed',
+                    },
+                });
+            }
+        } catch (err: any) {
+            throw new Error(err);
         }
     };
 
-    getById = async (req: Request, res: Response) => {
-        const {customerId} = req.query as {customerId?: string};
+    getCustomer = async (req: Request, res: Response) => {
+        const {customerId, customerIds, email} = req.query as {
+            customerId?: string;
+            email?: string;
+            customerIds?: string[] | string;
+        };
 
-        const customer = await this.customerService.getById(customerId || '');
+        console.log(customerIds);
 
-        if (customer) {
-            res.status(200).json({data: {customer}});
-        } else {
-            res.status(404).json({data: {message: 'Пользователь с таким id не найден'}});
+        try {
+            if (customerId || (customerIds && typeof customerIds === 'string')) {
+                const customer = await this.customerService.getById(
+                    customerId || (customerIds as string),
+                );
+
+                if (customer) {
+                    res.status(200).json({data: {customer}});
+                } else {
+                    res.status(404).json({
+                        data: {message: `Пользователь с таким id не найден [${customerId}]`},
+                    });
+                }
+            } else if (email) {
+                const customer = await this.customerService.getByEmail(email);
+
+                if (customer) {
+                    res.status(200).json({data: {customer}});
+                } else {
+                    res.status(404).json({
+                        data: {message: `Пользователь с таким email не найден [${email}]`},
+                    });
+                }
+            } else if (customerIds) {
+                const customers = await this.customerService.getByIds(customerIds as string[]);
+
+                if (customers.length) {
+                    res.status(200).json({data: {customers}});
+                } else {
+                    res.status(404).json({
+                        data: {
+                            message: `Пользователь с такими id не найден [${(
+                                customerIds as string[]
+                            ).join(',')}]`,
+                        },
+                    });
+                }
+            } else {
+                const customers = await this.customerService.getAll();
+
+                res.status(200).json({data: {customers}});
+            }
+        } catch (err: any) {
+            throw new Error(err);
         }
     };
 }
