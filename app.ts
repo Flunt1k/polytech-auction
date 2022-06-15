@@ -3,6 +3,7 @@ import routes from './routes';
 import {CustomerController} from './controllers/CustomerController';
 import {SellerController} from './controllers/SellerController';
 import {OrderController} from './controllers/OrderController';
+import {ProductController} from './controllers/ProductController';
 
 const app = express();
 
@@ -44,6 +45,16 @@ routes(app, [
             getOrder: ['get', '/'],
         },
         Controller: OrderController,
+    },
+    {
+        path: 'product',
+        subPaths: {
+            create: ['post', '/'],
+            update: ['patch', '/'],
+            delete: ['delete', '/'],
+            getProduct: ['get', '/'],
+        },
+        Controller: ProductController,
     },
 ]);
 

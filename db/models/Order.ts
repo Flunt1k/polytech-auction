@@ -1,4 +1,4 @@
-import {BelongsTo, Column, ForeignKey, HasOne, Model, Table} from 'sequelize-typescript';
+import {BelongsTo, Column, ForeignKey, Model, Table} from 'sequelize-typescript';
 import {DataTypes} from 'sequelize';
 import {Product} from './Product';
 import {Customer} from './Customer';
@@ -11,6 +11,8 @@ export type OrderCreateArgs = {
     phone: string;
     email: string;
     deliveryAddress: string;
+    isBuyIn: boolean;
+    bet: number;
 };
 
 // eslint-disable-next-line new-cap
@@ -55,6 +57,20 @@ export class Order extends Model<Order, OrderCreateArgs> {
     deliveryAddress!: string;
 
     // eslint-disable-next-line new-cap
+    @Column({
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+    })
+    isBuyIn!: boolean;
+
+    // eslint-disable-next-line new-cap
+    @Column({
+        type: DataTypes.DOUBLE,
+        allowNull: false,
+    })
+    bet!: number;
+
+    // eslint-disable-next-line new-cap
     @ForeignKey(() => Customer)
     // eslint-disable-next-line new-cap
     @Column({type: DataTypes.UUID})
@@ -75,6 +91,12 @@ export class Order extends Model<Order, OrderCreateArgs> {
     seller!: Seller;
 
     // eslint-disable-next-line new-cap
-    @HasOne(() => Product, 'orderId')
-    product!: Product;
+    @ForeignKey(() => Product)
+    // eslint-disable-next-line new-cap
+    @Column({type: DataTypes.UUID})
+    productId!: string;
+
+    // eslint-disable-next-line new-cap
+    @BelongsTo(() => Product, 'productId')
+    product!: Seller;
 }
