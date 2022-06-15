@@ -3,7 +3,7 @@
 ## How to start
 
 ```
-npm ci
+npm init
 npm run start
 ```
 
@@ -11,7 +11,10 @@ npm run start
 
 * TypeScript
 * MySQL
-* NextJS
+* Sequelize
+* ExpressJS
+* React.js
+* NodeJS
 
 ## Short description
 
