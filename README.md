@@ -3,8 +3,8 @@
 ## How to start
 
 ```
-npm init
-npm run start
+npm ci
+npm run dev
 ```
 
 ## Technological stack

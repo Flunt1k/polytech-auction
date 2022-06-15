@@ -4,7 +4,6 @@
   "description": "Application",
   "main": "index.js",
   "scripts": {
-    "init": "npm ci && npm run seed",
     "seed": "ts-node scripts/seed.ts",
     "drop": "ts-node scripts/drop_db.ts",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
