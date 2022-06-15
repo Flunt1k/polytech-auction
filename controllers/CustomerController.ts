@@ -25,7 +25,7 @@ export class CustomerController extends BaseController {
         const updatedCustomer = await this.customerService.update(customerId, updateData);
 
         if (updatedCustomer === null) {
-            res.status(500).json({
+            res.status(404).json({
                 message: 'Пользователь не найден',
             });
         }
