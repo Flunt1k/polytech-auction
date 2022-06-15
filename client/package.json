@@ -7,6 +7,7 @@
     "@types/node": "^16.11.41",
     "@types/react": "^18.0.12",
     "@types/react-dom": "^18.0.5",
+    "node-sass": "^7.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.2",
@@ -39,9 +40,10 @@
     ]
   },
   "devDependencies": {
-    "@yandex-cloud/eslint-config": "^1.1.0",
+    "@yandex-cloud/i18n": "^0.4.0",
     "@yandex-cloud/prettier-config": "^1.0.0",
     "@yandex-cloud/tsconfig": "^1.0.0",
+    "@yandex-cloud/uikit": "^2.6.0",
     "eslint": "^8.17.0",
     "prettier": "^2.7.0"
   }
