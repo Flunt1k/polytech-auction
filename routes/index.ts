@@ -1,11 +1,11 @@
 import {RouterMap} from '../types/misc';
 import express, {Express} from 'express';
-import {CustomerController} from '../controllers/CustomerController';
+import {BaseController} from '../controllers';
 
 type RoutesConfig = {
     path: string;
     subPaths: RouterMap;
-    Controller: typeof CustomerController;
+    Controller: typeof BaseController;
 };
 
 export default function (app: Express, args: RoutesConfig[]) {
