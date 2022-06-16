@@ -4,10 +4,11 @@
   "description": "Application",
   "main": "index.js",
   "scripts": {
+    "install": "npm ci && cd client && npm ci",
     "seed": "ts-node scripts/seed.ts",
     "drop": "ts-node scripts/drop_db.ts",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "client": "echo \"Client Started\"",
+    "client": "cd client && npm run start",
     "server": "nodemon index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
