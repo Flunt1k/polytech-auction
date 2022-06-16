@@ -3,11 +3,14 @@ import {Customer, CustomerCreateArgs} from '../../db/models/Customer';
 import {Op} from 'sequelize';
 import {ModelStatic} from 'sequelize-typescript';
 import {Order} from '../../db/models/Order';
+import bcrypt from 'bcryptjs';
+import SECRETS from '../../secrets';
 
 export class CustomerServiceImpl implements CustomerService {
     async create(args: CustomerCreateArgs): Promise<Customer> {
         try {
-            return Customer.create(args);
+            const password = await bcrypt.hash(args.password, SECRETS.SALT);
+            return Customer.create({...args, password});
         } catch (e: any) {
             throw new Error(e);
         }

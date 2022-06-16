@@ -10,6 +10,7 @@ type ServerAppSecrets = {
     DB_NAME: string;
     SERT_PATH: string;
     SERVER_PORT: number | string;
+    SALT: string | number;
 };
 
 const SECRETS: ServerAppSecrets = {
@@ -20,6 +21,7 @@ const SECRETS: ServerAppSecrets = {
     DB_NAME: process.env.DB_NAME || '',
     SERT_PATH: process.env.SERT_PATH || '',
     SERVER_PORT: process.env.SERVER_PORT || 3000,
+    SALT: process.env.SALT || 10,
 };
 
 export default SECRETS;
