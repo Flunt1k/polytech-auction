@@ -1,5 +1,13 @@
 import React, {useEffect} from 'react';
-import {Input, Button, FormErrorMessage, FormControl} from '@chakra-ui/react';
+import {
+    Input,
+    Button,
+    FormErrorMessage,
+    FormControl,
+    Text,
+    Center,
+    chakra
+} from '@chakra-ui/react';
 import {useForm} from 'react-hook-form';
 
 const AuthPage = () => {
@@ -23,41 +31,69 @@ const AuthPage = () => {
         });
     };
 
-    useEffect(() => {
-        console.log(errors);
-    }, [errors?.password]);
+    const Form = chakra('form', {
+        baseStyle: {
+            display: 'flex',
+            alignItems: 'center',
+            flexDirection: 'column',
+            gap: '30px',
+            width: '350px',
+            height: '250px',
+            position: 'relative',
+        },
+    });
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <FormControl isInvalid={errors?.email}>
-                <Input
-                    isInvalid={errors?.email}
-                    type="email"
-                    placeholder="email"
-                    {...register('email', {
-                        required: 'Пожалуйста, введите Email',
-                        pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
-                    })}
-                />
-                <FormErrorMessage>{errors?.email?.message}</FormErrorMessage>
-            </FormControl>
-            <FormControl isInvalid={errors?.password}>
-                <Input
-                    isInvalid={errors?.password}
-                    type="password"
-                    placeholder="password"
-                    {...register('password', {
-                        required: 'Пожалуйста, введите пароль',
-                        minLength: {value: 6, message: 'Пароль должен быть больше 6-ти символов'},
-                        maxLength: {value: 10, message: 'Пароль должен быть меньше 10-ти символов'},
-                    })}
-                />
-                <FormErrorMessage>{errors?.password?.message}</FormErrorMessage>
-            </FormControl>
-            <Button colorScheme="teal" isLoading={isSubmitting} type="submit">
-                Submit
-            </Button>
-        </form>
+        <Center height="100vh">
+            <Form onSubmit={handleSubmit(onSubmit)}>
+                <Text fontSize="2xl">Авторизация</Text>
+                <FormControl isInvalid={errors?.email}>
+                    <Input
+                        isInvalid={errors?.email}
+                        type="text"
+                        placeholder="email"
+                        {...register('email', {
+                            required: 'Пожалуйста, введите Email',
+                            pattern: {
+                                value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                                message: 'Некорректный Email',
+                            },
+                        })}
+                    />
+                    <FormErrorMessage position="absolute">
+                        {errors?.email?.message}
+                    </FormErrorMessage>
+                </FormControl>
+                <FormControl isInvalid={errors?.password}>
+                    <Input
+                        isInvalid={errors?.password}
+                        type="password"
+                        placeholder="password"
+                        {...register('password', {
+                            required: 'Пожалуйста, введите пароль',
+                            minLength: {
+                                value: 6,
+                                message: 'Пароль должен быть больше 6-ти символов',
+                            },
+                            maxLength: {
+                                value: 10,
+                                message: 'Пароль должен быть меньше 10-ти символов',
+                            },
+                        })}
+                    />
+                    <FormErrorMessage>{errors?.password?.message}</FormErrorMessage>
+                </FormControl>
+                <Button
+                    colorScheme="teal"
+                    isLoading={isSubmitting}
+                    type="submit"
+                    position="absolute"
+                    bottom="0"
+                >
+                    Войти
+                </Button>
+            </Form>
+        </Center>
     );
 };
 
