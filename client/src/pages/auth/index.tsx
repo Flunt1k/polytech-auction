@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
     Input,
     Button,
@@ -6,7 +6,9 @@ import {
     FormControl,
     Text,
     Center,
-    chakra
+    InputRightElement,
+    InputGroup,
+    chakra,
 } from '@chakra-ui/react';
 import {useForm} from 'react-hook-form';
 
@@ -20,6 +22,10 @@ const AuthPage = () => {
         reValidateMode: 'onChange',
         shouldFocusError: true,
     });
+
+    const [show, setShow] = React.useState(false);
+
+    const handleClick = () => setShow(!show);
 
     const onSubmit = () => {
         return new Promise<void>((resolve) => {
@@ -65,23 +71,31 @@ const AuthPage = () => {
                     </FormErrorMessage>
                 </FormControl>
                 <FormControl isInvalid={errors?.password}>
-                    <Input
-                        isInvalid={errors?.password}
-                        type="password"
-                        placeholder="password"
-                        {...register('password', {
-                            required: 'Пожалуйста, введите пароль',
-                            minLength: {
-                                value: 6,
-                                message: 'Пароль должен быть больше 6-ти символов',
-                            },
-                            maxLength: {
-                                value: 10,
-                                message: 'Пароль должен быть меньше 10-ти символов',
-                            },
-                        })}
-                    />
-                    <FormErrorMessage>{errors?.password?.message}</FormErrorMessage>
+                    <InputGroup>
+                        <Input
+                            paddingRight={'7rem'}
+                            isInvalid={errors?.password}
+                            type={show ? 'text' : 'password'}
+                            placeholder="Пароль"
+                            {...register('password', {
+                                required: 'Пожалуйста, введите пароль',
+                                minLength: {
+                                    value: 6,
+                                    message: 'Пароль должен быть больше 6-ти символов',
+                                },
+                                maxLength: {
+                                    value: 10,
+                                    message: 'Пароль должен быть меньше 10-ти символов',
+                                },
+                            })}
+                        />
+                        <InputRightElement width="6em">
+                            <Button onClick={handleClick}>{show ? 'Скрыть' : 'Показать'}</Button>
+                        </InputRightElement>
+                    </InputGroup>
+                    <FormErrorMessage position="absolute">
+                        {errors?.password?.message}
+                    </FormErrorMessage>
                 </FormControl>
                 <Button
                     colorScheme="teal"
