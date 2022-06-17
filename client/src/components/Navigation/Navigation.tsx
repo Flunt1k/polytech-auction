@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import {Box, Button, Center, Flex, Icon, IconButton, Spacer} from '@chakra-ui/react';
 import {RiAuctionFill} from 'react-icons/ri';
 import {BsArrowRightSquare} from 'react-icons/bs';
 import {IconType} from 'react-icons';
+import {useNavigate} from 'react-router-dom';
 
 export type AsideMenuConfig = {
     openText: string;
     icon: IconType;
     aria: string;
+    path: string
 };
 
 type MenuButtonProps = {
@@ -15,9 +17,10 @@ type MenuButtonProps = {
     icon: IconType;
     buttonText: string;
     aria: string;
+    onClick: () => void
 };
 
-export const MenuButton: React.FC<MenuButtonProps> = ({isOpen, buttonText, icon, aria}) => {
+const MenuButton: React.FC<MenuButtonProps> = ({isOpen, buttonText, icon, aria, onClick}) => {
     return isOpen ? (
         <Button
             variant="ghost"
@@ -25,6 +28,7 @@ export const MenuButton: React.FC<MenuButtonProps> = ({isOpen, buttonText, icon,
             aria-label={aria}
             borderBottom="1px solid white"
             width="100%"
+            onClick={onClick}
         >
             <Flex width="100%">
                 <Center>
@@ -42,6 +46,7 @@ export const MenuButton: React.FC<MenuButtonProps> = ({isOpen, buttonText, icon,
                 aria-label={aria}
                 icon={<Icon as={icon} />}
                 width="100%"
+                onClick={onClick}
             />
         </Center>
     );
@@ -53,6 +58,8 @@ type NavigationProps = {
 
 export const Navigation: React.FC<NavigationProps> = ({config}) => {
     const [isOpen, setIsOpen] = React.useState(false);
+
+    const navigate = useNavigate();
 
     React.useEffect(() => {
         const navStatus = localStorage.getItem('navigation');
@@ -78,7 +85,7 @@ export const Navigation: React.FC<NavigationProps> = ({config}) => {
                     />
                 </Center>
                 <Box borderTop="1px solid white" marginTop="20px">
-                    {config.map(({openText, icon, aria}) => {
+                    {config.map(({openText, icon, aria, path}) => {
                         return (
                             <MenuButton
                                 key={aria}
@@ -86,6 +93,9 @@ export const Navigation: React.FC<NavigationProps> = ({config}) => {
                                 icon={icon}
                                 buttonText={openText}
                                 aria={aria}
+                                onClick={() => {
+                                    navigate(path);
+                                }}
                             />
                         );
                     })}
