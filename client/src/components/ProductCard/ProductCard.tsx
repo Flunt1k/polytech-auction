@@ -1,6 +1,7 @@
 import React from 'react';
 import {Box, Center, GridItem, Image} from '@chakra-ui/react';
 import moment from 'moment';
+import {useNavigate} from 'react-router-dom';
 
 type Props = {
     id: string;
@@ -13,7 +14,9 @@ type Props = {
 };
 
 export const ProductCard: React.FC<Props> = (props: Props) => {
-    const {image, year, title, buyInPrice, initialPrice, deadline} = props;
+    const {image, year, title, buyInPrice, initialPrice, deadline, id} = props;
+
+    const navigate = useNavigate();
 
     return (
         <GridItem>
@@ -26,6 +29,7 @@ export const ProductCard: React.FC<Props> = (props: Props) => {
                     overflow="hidden"
                     cursor="pointer"
                     _hover={{transform: 'scale(1.02)'}}
+                    onClick={() => navigate(`/product/${id}`)}
                 >
                     <Image src={`data:image/png;base64, ${image}`} />
 
