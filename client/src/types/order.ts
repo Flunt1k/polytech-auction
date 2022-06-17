@@ -50,6 +50,13 @@ export type OrderGetArgs = {
     offset?: number;
 };
 
+export type OrderUpdateResponse =
+    | {
+          message: string;
+          status: 'failed' | 'success';
+      }
+    | {order: Order};
+
 export type OrderCreateResponse = {
     order: Order;
 };

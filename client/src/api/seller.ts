@@ -1,21 +1,21 @@
 import {
-    CustomerCreateArgs,
-    CustomerCreateResponse,
-    CustomerDeleteArgs,
-    CustomerDeleteResponse,
-    CustomerGetArgs,
-    CustomerGetResponse,
-    CustomerUpdateArgs,
-    CustomerUpdateResponse,
+    SellerCreateArgs,
+    SellerCreateResponse,
+    SellerDeleteArgs,
+    SellerDeleteResponse,
+    SellerGetArgs,
+    SellerGetResponse,
+    SellerUpdateArgs,
+    SellerUpdateResponse,
 } from '../types';
 import {appFetch, createQuery} from './fetch';
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-    getCustomer: async (args: CustomerGetArgs, token: string): Promise<CustomerGetResponse> => {
+    getSeller: async (args: SellerGetArgs, token: string): Promise<SellerGetResponse> => {
         try {
             return await appFetch({
-                path: '/api/customer',
+                path: '/api/seller',
                 method: 'get',
                 token,
                 query: createQuery(args),
@@ -24,10 +24,10 @@ export default {
             throw new Error(err);
         }
     },
-    createCustomer: async (args: CustomerCreateArgs): Promise<CustomerCreateResponse> => {
+    createSeller: async (args: SellerCreateArgs): Promise<SellerCreateResponse> => {
         try {
             return await appFetch({
-                path: '/api/customer',
+                path: '/api/seller',
                 method: 'post',
                 data: args,
             });
@@ -35,13 +35,10 @@ export default {
             throw new Error(err);
         }
     },
-    updateCustomer: async (
-        args: CustomerUpdateArgs,
-        token: string,
-    ): Promise<CustomerUpdateResponse> => {
+    updateSeller: async (args: SellerUpdateArgs, token: string): Promise<SellerUpdateResponse> => {
         try {
             return await appFetch({
-                path: '/api/customer',
+                path: '/api/seller',
                 method: 'patch',
                 data: args,
                 token,
@@ -50,13 +47,10 @@ export default {
             throw new Error(err);
         }
     },
-    deleteCustomer: async (
-        args: CustomerDeleteArgs,
-        token: string,
-    ): Promise<CustomerDeleteResponse> => {
+    deleteSeller: async (args: SellerDeleteArgs, token: string): Promise<SellerDeleteResponse> => {
         try {
             return await appFetch({
-                path: '/api/customer',
+                path: '/api/seller',
                 method: 'delete',
                 data: args,
                 token,

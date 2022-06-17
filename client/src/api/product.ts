@@ -1,21 +1,21 @@
 import {
-    CustomerCreateArgs,
-    CustomerCreateResponse,
-    CustomerDeleteArgs,
-    CustomerDeleteResponse,
-    CustomerGetArgs,
-    CustomerGetResponse,
-    CustomerUpdateArgs,
-    CustomerUpdateResponse,
+    ProductCreateArgs,
+    ProductCreateResponse,
+    ProductDeleteArgs,
+    ProductDeleteResponse,
+    ProductGetArgs,
+    ProductGetResponse,
+    ProductUpdateArgs,
+    ProductUpdateResponse,
 } from '../types';
 import {appFetch, createQuery} from './fetch';
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-    getCustomer: async (args: CustomerGetArgs, token: string): Promise<CustomerGetResponse> => {
+    getProduct: async (args: ProductGetArgs, token: string): Promise<ProductGetResponse> => {
         try {
             return await appFetch({
-                path: '/api/customer',
+                path: '/api/product',
                 method: 'get',
                 token,
                 query: createQuery(args),
@@ -24,10 +24,10 @@ export default {
             throw new Error(err);
         }
     },
-    createCustomer: async (args: CustomerCreateArgs): Promise<CustomerCreateResponse> => {
+    createProduct: async (args: ProductCreateArgs): Promise<ProductCreateResponse> => {
         try {
             return await appFetch({
-                path: '/api/customer',
+                path: '/api/product',
                 method: 'post',
                 data: args,
             });
@@ -35,13 +35,13 @@ export default {
             throw new Error(err);
         }
     },
-    updateCustomer: async (
-        args: CustomerUpdateArgs,
+    updateProduct: async (
+        args: ProductUpdateArgs,
         token: string,
-    ): Promise<CustomerUpdateResponse> => {
+    ): Promise<ProductUpdateResponse> => {
         try {
             return await appFetch({
-                path: '/api/customer',
+                path: '/api/product',
                 method: 'patch',
                 data: args,
                 token,
@@ -50,13 +50,13 @@ export default {
             throw new Error(err);
         }
     },
-    deleteCustomer: async (
-        args: CustomerDeleteArgs,
+    deleteProduct: async (
+        args: ProductDeleteArgs,
         token: string,
-    ): Promise<CustomerDeleteResponse> => {
+    ): Promise<ProductDeleteResponse> => {
         try {
             return await appFetch({
-                path: '/api/customer',
+                path: '/api/product',
                 method: 'delete',
                 data: args,
                 token,

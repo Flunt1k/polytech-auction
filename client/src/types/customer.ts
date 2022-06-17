@@ -25,6 +25,13 @@ export type CustomerDeleteArgs = {
     customerId: string;
 };
 
+export type CustomerUpdateResponse =
+    | {
+          message: string;
+          status: 'failed' | 'success';
+      }
+    | {customer: Customer};
+
 export type CustomerUpdateArgs = {
     customerId: string;
     updateData: Partial<Customer>;

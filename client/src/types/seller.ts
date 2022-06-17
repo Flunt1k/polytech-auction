@@ -32,6 +32,15 @@ export type SellerUpdateArgs = {
     updateData: Partial<Seller>;
 };
 
+export type SellerUpdateResponse =
+    | {
+          seller: Seller;
+      }
+    | {
+          message: string;
+          status: 'failed';
+      };
+
 export type SellerGetArgs = {
     sellerId?: string;
     email?: string;
