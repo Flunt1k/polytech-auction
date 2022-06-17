@@ -3,6 +3,7 @@ import {SellerServiceImpl} from '../services/SellerService';
 import {SellerService} from '../services/SellerService/types';
 import {Request, Response} from 'express';
 import {Seller, SellerCreateArgs} from '../db/models/Seller';
+import {generateJwtToken} from '../utils/jwt';
 
 export class SellerController extends BaseController {
     sellerService: SellerService;
@@ -17,7 +18,9 @@ export class SellerController extends BaseController {
         try {
             const seller = await this.sellerService.create(body);
 
-            res.status(201).json({data: {seller}});
+            const token = generateJwtToken(seller);
+
+            res.status(201).json({data: {seller, token}});
         } catch (err: any) {
             throw new Error(err);
         }

@@ -1,9 +1,15 @@
 import express from 'express';
+import passport from 'passport';
 import routes from './routes';
 import {CustomerController} from './controllers/CustomerController';
 import {SellerController} from './controllers/SellerController';
 import {OrderController} from './controllers/OrderController';
 import {ProductController} from './controllers/ProductController';
+import {Customer} from './db/models/Customer';
+import {Seller} from './db/models/Seller';
+import {generateJwtToken} from './utils/jwt';
+
+import './utils/auth';
 
 const app = express();
 
@@ -13,6 +19,41 @@ app.use(express.json());
 app.post('*', (req, _res, next) => {
     console.log(req.body);
     next();
+});
+
+app.post('/login', function (req, res) {
+    passport.authenticate(
+        'local',
+        {session: false},
+        (err: string, user: Customer | Seller | null, info: any) => {
+            console.log(err, info);
+            if (err || !user) {
+                return res.status(400).json({
+                    message: 'Произошла ошибка!',
+                    user: user,
+                    err: err,
+                    info,
+                });
+            }
+
+            req.login(user, {session: false}, (err: any) => {
+                if (err) {
+                    res.send(err);
+                    return;
+                }
+                const token = generateJwtToken(user);
+                // eslint-disable-next-line consistent-return
+                return res.status(200).json({
+                    data: {
+                        user,
+                        token,
+                    },
+                });
+            });
+
+            return null;
+        },
+    )(req, res);
 });
 
 routes(app, [

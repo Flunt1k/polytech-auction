@@ -6,7 +6,7 @@ export class BaseController {
         this.paths = paths;
     }
 
-    init = (): {method: any; path: string; handlerType: HandlerType}[] => {
+    init = (): {method: any; path: string; handlerType: HandlerType; methodName: string}[] => {
         Object.getOwnPropertyNames(this);
         return Object.getOwnPropertyNames(this)
             .map((v) => {
@@ -18,10 +18,16 @@ export class BaseController {
                         method: this[v],
                         handlerType: pathSettings[0],
                         path: pathSettings[1],
+                        methodName: v,
                     };
                 }
                 return null;
             })
-            .filter(Boolean) as {method: any; path: string; handlerType: HandlerType}[];
+            .filter(Boolean) as {
+            method: any;
+            path: string;
+            handlerType: HandlerType;
+            methodName: string;
+        }[];
     };
 }
