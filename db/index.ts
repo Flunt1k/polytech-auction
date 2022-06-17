@@ -18,6 +18,7 @@ const sequelize = new Sequelize({
     username: SECRETS.DB_USER,
     password: SECRETS.DB_PASSWORD,
     models: [path.resolve(__dirname, 'models')],
+    query: {raw: true},
 });
 
 export default sequelize;
