@@ -21,7 +21,6 @@ export const App = () => {
     return (
         <Flex height="100vh" width="100vw" overflow="hidden">
             <Box height="100vh" flex="0 0 auto">
-                <Input />
                 <Navigation config={ASIDE_MENU_BUTTONS} />
             </Box>
             <Box height="100vh" flex="1"></Box>

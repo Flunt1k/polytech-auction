@@ -72,6 +72,13 @@ export class Product extends Model<Product, ProductCreateArgs> {
     deadline!: string;
 
     // eslint-disable-next-line new-cap
+    @Column({
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+    })
+    expired!: boolean;
+
+    // eslint-disable-next-line new-cap
     @ForeignKey(() => Seller)
     // eslint-disable-next-line new-cap
     @Column({type: DataTypes.UUID})
