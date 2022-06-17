@@ -10,6 +10,7 @@ export type Customer = {
     phone: string;
     cash: number;
     orders: Order[];
+    type: 'customer';
 };
 
 export type CustomerCreateArgs = {

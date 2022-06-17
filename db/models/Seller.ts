@@ -63,6 +63,13 @@ export class Seller extends Model<Seller, SellerCreateArgs> {
     // eslint-disable-next-line new-cap
     @Column({
         type: DataTypes.STRING,
+        defaultValue: 'seller',
+    })
+    type!: string;
+
+    // eslint-disable-next-line new-cap
+    @Column({
+        type: DataTypes.STRING,
         allowNull: false,
         unique: true,
     })

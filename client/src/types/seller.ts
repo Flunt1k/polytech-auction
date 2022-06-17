@@ -12,6 +12,7 @@ export type Seller = {
     cash: number;
     orders?: Order[];
     sellItems?: Product[];
+    type: 'seller';
 };
 
 export type SellerCreateArgs = {
