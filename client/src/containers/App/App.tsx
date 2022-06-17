@@ -4,10 +4,7 @@ import {FaHome} from 'react-icons/fa';
 import {MdSell} from 'react-icons/md';
 import {Routes, Route, Navigate, useLocation} from 'react-router-dom';
 import {AsideMenuConfig, Navigation} from '../../components/Navigation/Navigation';
-// import {ProductCard} from '../../components/ProductCard/ProductCard';
-import {useDispatch, useSelector} from 'react-redux';
-import {fetchAllProducts} from '../../redux/products/actions';
-import {AppDispatch} from '../../redux/store';
+import {useSelector} from 'react-redux';
 import {decodeJwt} from '../../utils/jwt';
 
 import AuthPage from '../../pages/auth';
@@ -50,7 +47,7 @@ export const App = () => {
                 <Box height="100vh" flex="0 0 auto">
                     <Navigation config={ASIDE_MENU_BUTTONS} />
                 </Box>
-                <Box height="100vh" flex="1" overflow="auto">
+                <Box height="100vh" width="100vw" flex="1" overflow="auto" padding="35px">
                     <Routes>
                         <Route
                             path="/"
@@ -65,6 +62,14 @@ export const App = () => {
                             element={
                                 <RequireAuth>
                                     <GalleryPage />
+                                </RequireAuth>
+                            }
+                        />
+                        <Route
+                            path="/products/:id"
+                            element={
+                                <RequireAuth>
+                                    <ProductPage />
                                 </RequireAuth>
                             }
                         />

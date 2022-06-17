@@ -26,7 +26,7 @@ const composeEnhancers =
 const rootReducer = combineReducers({user: userReducer, products: productsReducer});
 
 const checkTokenExpirationMiddleware = (store: any) => (next: any) => (action: any) => {
-    const token = JSON.parse(localStorage.getItem('token') || '');
+    const token = localStorage.getItem('token') || '';
     if (decodeJwt(token).exp < Date.now() / 1000) {
         next(action);
         localStorage.removeItem('token');

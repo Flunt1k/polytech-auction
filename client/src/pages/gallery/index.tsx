@@ -16,20 +16,21 @@ const GalleryPage = () => {
     }, [dispatch]);
 
     return (
-        <Grid>
-            {new Array(42).fill(products[0]).map((product: Product) => {
-                return (
-                    <ProductCard
-                        id={product.id}
-                        title={product.productName}
-                        image={product.image}
-                        year={product.year}
-                        initialPrice={product.initialPrice}
-                        buyInPrice={product.buyInPrice}
-                        deadline={product.deadline}
-                    />
-                );
-            })}
+        <Grid templateColumns="repeat(3, 1fr)" gap={10}>
+            {products.length &&
+                new Array(42).fill(products[0]).map((product: Product) => {
+                    return (
+                        <ProductCard
+                            id={product.id}
+                            title={product.productName}
+                            image={product.image}
+                            year={product.year}
+                            initialPrice={product.initialPrice}
+                            buyInPrice={product.buyInPrice}
+                            deadline={product.deadline}
+                        />
+                    );
+                })}
         </Grid>
     );
 };
