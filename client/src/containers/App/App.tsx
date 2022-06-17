@@ -2,7 +2,7 @@ import React from 'react';
 import {Box, Flex} from '@chakra-ui/react';
 import {FaHome} from 'react-icons/fa';
 import {MdSell} from 'react-icons/md';
-import {Routes, Route, Navigate} from 'react-router-dom';
+import {Routes, Route, Navigate, useLocation} from 'react-router-dom';
 import {AsideMenuConfig, Navigation} from '../../components/Navigation/Navigation';
 // import {ProductCard} from '../../components/ProductCard/ProductCard';
 import {useDispatch, useSelector} from 'react-redux';
@@ -34,6 +34,7 @@ const ASIDE_MENU_BUTTONS: AsideMenuConfig[] = [
 
 const RequireAuth = ({children}: {children: JSX.Element}) => {
     const token = useSelector(selectToken);
+    let location = useLocation();
 
     if (!token || decodeJwt(token).exp < Date.now() / 1000) {
         return <Navigate to="/login" state={{from: location}} replace />;
@@ -67,6 +68,8 @@ export const App = () => {
                                 </RequireAuth>
                             }
                         />
+                        <Route path="/login" element={<AuthPage />} />
+                        <Route path="/registration" element={<RegPage />} />
                     </Routes>
                 </Box>
             </Flex>
