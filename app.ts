@@ -26,7 +26,6 @@ app.post('/login', function (req, res) {
         'local',
         {session: false},
         (err: string, user: Customer | Seller | null, info: any) => {
-            console.log(err, info);
             if (err || !user) {
                 return res.status(400).json({
                     message: 'Произошла ошибка!',
