@@ -9,7 +9,8 @@ import SECRETS from '../../secrets';
 
 export class SellerServiceImpl implements SellerService {
     async create(args: SellerCreateArgs): Promise<Seller> {
-        const password = await bcrypt.hash(args.password, SECRETS.SALT);
+        const salt = bcrypt.genSaltSync(SECRETS.SALT);
+        const password = await bcrypt.hash(args.password, salt);
         return Seller.create({...args, password})
             .then((res) => {
                 return res;

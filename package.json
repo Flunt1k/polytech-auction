@@ -43,7 +43,9 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
+    "@types/jsonwebtoken": "^8.5.8",
     "@types/passport": "^1.0.9",
+    "@types/passport-jwt": "^3.0.6",
     "@types/passport-local": "^1.0.34",
     "@types/validator": "^13.7.3",
     "@yandex-cloud/eslint-config": "^1.1.0",

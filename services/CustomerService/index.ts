@@ -9,7 +9,8 @@ import SECRETS from '../../secrets';
 export class CustomerServiceImpl implements CustomerService {
     async create(args: CustomerCreateArgs): Promise<Customer> {
         try {
-            const password = await bcrypt.hash(args.password, SECRETS.SALT);
+            const salt = bcrypt.genSaltSync(SECRETS.SALT);
+            const password = await bcrypt.hash(args.password, salt);
             return Customer.create({...args, password});
         } catch (e: any) {
             throw new Error(e);

@@ -3,6 +3,7 @@ import {BaseController} from './index';
 import {Customer, CustomerCreateArgs} from '../db/models/Customer';
 import {CustomerService} from '../services/CustomerService/types';
 import {CustomerServiceImpl} from '../services/CustomerService';
+import {generateJwtToken} from '../utils/jwt';
 
 export class CustomerController extends BaseController {
     customerService: CustomerService;
@@ -17,7 +18,9 @@ export class CustomerController extends BaseController {
         try {
             const customer = await this.customerService.create(body);
 
-            res.status(201).json({data: {customer}});
+            const token = generateJwtToken(customer);
+
+            res.status(201).json({data: {customer, token}});
         } catch (err: any) {
             throw new Error(err);
         }
