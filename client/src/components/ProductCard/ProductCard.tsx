@@ -28,7 +28,7 @@ export const ProductCard: React.FC<Props> = (props: Props) => {
                     borderColor="antiquewhite"
                     overflow="hidden"
                     cursor="pointer"
-                    _hover={{transform: 'scale(1.02)'}}
+                    _hover={{transform: 'scale(1.05)'}}
                     onClick={() => navigate(`/product/${id}`)}
                 >
                     <Image src={`data:image/png;base64, ${image}`} />

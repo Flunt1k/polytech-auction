@@ -1,5 +1,5 @@
 import React from 'react';
-import {Grid} from '@chakra-ui/react';
+import {Center, Grid, Spinner} from '@chakra-ui/react';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch} from '../../redux/store';
 import {selectProducts} from '../../redux/products/selectors';
@@ -15,22 +15,35 @@ const GalleryPage = () => {
         dispatch(fetchAllProducts());
     }, [dispatch]);
 
+    if (!products.length) {
+        return (
+            <Center width="100%" height="100%">
+                <Spinner
+                    thickness="4px"
+                    speed="0.75s"
+                    emptyColor="gray.200"
+                    color="blue.500"
+                    size="xl"
+                />
+            </Center>
+        );
+    }
+
     return (
         <Grid templateColumns="repeat(3, 1fr)" gap={10}>
-            {products.length &&
-                new Array(42).fill(products[0]).map((product: Product) => {
-                    return (
-                        <ProductCard
-                            id={product.id}
-                            title={product.productName}
-                            image={product.image}
-                            year={product.year}
-                            initialPrice={product.initialPrice}
-                            buyInPrice={product.buyInPrice}
-                            deadline={product.deadline}
-                        />
-                    );
-                })}
+            {new Array(42).fill(products[0]).map((product: Product) => {
+                return (
+                    <ProductCard
+                        id={product.id}
+                        title={product.productName}
+                        image={product.image}
+                        year={product.year}
+                        initialPrice={product.initialPrice}
+                        buyInPrice={product.buyInPrice}
+                        deadline={product.deadline}
+                    />
+                );
+            })}
         </Grid>
     );
 };
