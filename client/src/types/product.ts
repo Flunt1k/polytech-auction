@@ -4,7 +4,7 @@ import {Seller} from './seller';
 export type Product = {
     id: string;
     productName: string;
-    imageLink: string;
+    image: string;
     description: string;
     year: string;
     buyInPrice: number;
@@ -18,7 +18,7 @@ export type Product = {
 
 export type ProductCreateArgs = {
     productName: string;
-    imageLink: string;
+    image: string;
     description: string;
     year: string;
     buyInPrice?: number;

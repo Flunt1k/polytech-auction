@@ -5,7 +5,7 @@ import {Order} from './Order';
 
 export type ProductCreateArgs = {
     productName: string;
-    imageLink: string;
+    image: string;
     description: string;
     year: string;
     buyInPrice?: number;
@@ -37,7 +37,7 @@ export class Product extends Model<Product, ProductCreateArgs> {
         type: DataTypes.STRING,
         allowNull: false,
     })
-    imageLink!: string;
+    image!: string;
 
     // eslint-disable-next-line new-cap
     @Column({
