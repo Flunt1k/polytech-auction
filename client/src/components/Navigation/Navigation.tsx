@@ -13,7 +13,8 @@ export type AsideMenuConfig = {
     openText: string;
     icon: IconType;
     aria: string;
-    path: string;
+    path?: string;
+    onClick?: () => void;
 };
 
 type MenuButtonProps = {
@@ -36,7 +37,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({isOpen, buttonText, icon, aria, 
         >
             <Flex width="100%">
                 <Center>
-                    <Icon as={icon} marginRight="5px" />
+                    <Icon as={icon} marginRight="5px" color="white" />
                     {buttonText}
                 </Center>
             </Flex>
@@ -51,6 +52,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({isOpen, buttonText, icon, aria, 
                 icon={<Icon as={icon} />}
                 width="100%"
                 onClick={onClick}
+                color="white"
             />
         </Center>
     );
@@ -82,7 +84,7 @@ export const Navigation: React.FC<NavigationProps> = ({config}) => {
         localStorage.setItem('navigation', isOpen ? 'open' : 'close');
     }, [isOpen]);
 
-    const width = isOpen ? '220px' : '52px';
+    const width = isOpen ? '240px' : '52px';
 
     return (
         <Box height="100vh" width={width} overflow="hidden" borderRight="1px solid white">
@@ -97,7 +99,7 @@ export const Navigation: React.FC<NavigationProps> = ({config}) => {
                     />
                 </Center>
                 <Box borderTop="1px solid white" marginTop="20px">
-                    {config.map(({openText, icon, aria, path}) => {
+                    {config.map(({openText, icon, aria, path, onClick}) => {
                         return (
                             <MenuButton
                                 key={aria}
@@ -106,7 +108,11 @@ export const Navigation: React.FC<NavigationProps> = ({config}) => {
                                 buttonText={openText}
                                 aria={aria}
                                 onClick={() => {
-                                    navigate(path);
+                                    if (path) {
+                                        navigate(path);
+                                    } else if (onClick) {
+                                        onClick();
+                                    }
                                 }}
                             />
                         );
