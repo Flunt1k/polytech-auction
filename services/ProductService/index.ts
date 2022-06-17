@@ -15,7 +15,11 @@ const validateIsExpired = (product: Product) => {
 export class ProductServiceImpl implements ProductService {
     create(args: ProductCreateArgs): Promise<Product> {
         return Product.create(args)
-            .then((res) => res)
+            .then((res) => {
+                // @ts-ignore
+                res.image = res.image.toString('base64');
+                return res;
+            })
             .catch((err) => {
                 throw new Error(err);
             });
@@ -73,7 +77,12 @@ export class ProductServiceImpl implements ProductService {
 
                 await Product.update({expired: true}, {where: {id: Array.from(expiredIds)}});
 
-                return filtered;
+                return filtered.map((r: Product) => {
+                    return {
+                        ...r,
+                        image: r.image.toString('base64'),
+                    } as unknown as Product;
+                });
             })
             .catch((err) => {
                 throw new Error(err);
@@ -118,6 +127,9 @@ export class ProductServiceImpl implements ProductService {
                     res.expired = true;
                 }
 
+                // @ts-ignore
+                res.image = res.image.toString('base64');
+
                 return res;
             })
             .catch((err) => {
@@ -130,7 +142,13 @@ export class ProductServiceImpl implements ProductService {
             .then(() => {
                 return Product.findByPk(productId, {include: [Order, Seller, Customer]});
             })
-            .then((res) => res)
+            .then((res) => {
+                if (res) {
+                    //@ts-ignore
+                    res.image = res.image.toString('base64');
+                }
+                return res;
+            })
             .catch((err) => {
                 throw new Error(err);
             });

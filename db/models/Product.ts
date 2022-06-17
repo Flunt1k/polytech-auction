@@ -5,7 +5,7 @@ import {Order} from './Order';
 
 export type ProductCreateArgs = {
     productName: string;
-    image: string;
+    image: Buffer;
     description: string;
     year: string;
     buyInPrice?: number;
@@ -34,10 +34,11 @@ export class Product extends Model<Product, ProductCreateArgs> {
 
     // eslint-disable-next-line new-cap
     @Column({
-        type: DataTypes.STRING,
+        // eslint-disable-next-line new-cap
+        type: DataTypes.BLOB('long'),
         allowNull: false,
     })
-    image!: string;
+    image!: Buffer;
 
     // eslint-disable-next-line new-cap
     @Column({
