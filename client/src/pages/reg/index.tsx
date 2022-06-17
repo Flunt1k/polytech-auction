@@ -9,13 +9,17 @@ import {
     chakra,
     InputRightElement,
     InputGroup,
+    Select,
 } from '@chakra-ui/react';
 import {useForm} from 'react-hook-form';
+
+import api from '../../api';
 
 const RegPage = () => {
     const {
         handleSubmit,
         register,
+        getValues,
         formState: {errors, isSubmitting},
     } = useForm({
         mode: 'onSubmit',
@@ -28,13 +32,19 @@ const RegPage = () => {
     const handleClick = () => setShow(!show);
 
     const onSubmit = () => {
-        return new Promise<void>((resolve) => {
-            setTimeout(() => {
-                console.log('submit');
+        const formData = getValues();
 
-                resolve();
-            }, 3000);
-        });
+        if (formData.userType === 'customer') {
+            delete formData.userType;
+
+            api.customer.createCustomer(formData);
+        }
+
+        if (formData.userType === 'seller') {
+            delete formData.userType;
+
+            api.seller.createCustomer(formData);
+        }
     };
 
     const Form = chakra('form', {
@@ -44,17 +54,15 @@ const RegPage = () => {
             flexDirection: 'column',
             gap: '30px',
             width: '350px',
-            height: '550px',
+            height: '600px',
             position: 'relative',
         },
     });
 
-    // name: string;
-    // lastName: string;
-    // username: string;
-    // password: string;
-    // email: string;
-    // phone: string;
+    const userTypesOptions = [
+        {label: 'Покупатель', value: 'customer'},
+        {label: 'Продавец', value: 'seller'},
+    ];
 
     return (
         <Center height="100vh">
@@ -84,17 +92,17 @@ const RegPage = () => {
                         {errors?.lastName?.message}
                     </FormErrorMessage>
                 </FormControl>
-                <FormControl isInvalid={errors?.userName}>
+                <FormControl isInvalid={errors?.username}>
                     <Input
-                        isInvalid={errors?.userName}
+                        isInvalid={errors?.username}
                         type="text"
                         placeholder="Имя пользователя"
-                        {...register('userName', {
+                        {...register('username', {
                             required: 'Пожалуйста, введите ваше имя пользователя',
                         })}
                     />
                     <FormErrorMessage position="absolute">
-                        {errors?.userName?.message}
+                        {errors?.username?.message}
                     </FormErrorMessage>
                 </FormControl>
                 <FormControl isInvalid={errors?.password}>
@@ -122,6 +130,25 @@ const RegPage = () => {
                     </InputGroup>
                     <FormErrorMessage position="absolute">
                         {errors?.password?.message}
+                    </FormErrorMessage>
+                </FormControl>
+                <FormControl isInvalid={errors?.userType}>
+                    <Select
+                        placeholder="Выберите тип пользователя"
+                        {...register('userType', {
+                            required: 'Пожалуйста, выберите тип пользователя',
+                        })}
+                    >
+                        {userTypesOptions?.map((el, i) => {
+                            return (
+                                <option key={i} value={el.value}>
+                                    {el.label}
+                                </option>
+                            );
+                        })}
+                    </Select>
+                    <FormErrorMessage position="absolute">
+                        {errors?.userType?.message}
                     </FormErrorMessage>
                 </FormControl>
                 <FormControl isInvalid={errors?.email}>
@@ -154,13 +181,7 @@ const RegPage = () => {
                         {errors?.phone?.message}
                     </FormErrorMessage>
                 </FormControl>
-                <Button
-                    colorScheme="teal"
-                    isLoading={isSubmitting}
-                    type="submit"
-                    position="absolute"
-                    bottom="0"
-                >
+                <Button colorScheme="teal" isLoading={isSubmitting} type="submit">
                     Зрегестрироваться
                 </Button>
             </Form>

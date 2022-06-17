@@ -20,10 +20,14 @@ const login = async (args: {
     return response;
 };
 
+const logOut = async () => {
+    await appFetch({path: '/logout', method: 'get'});
+};
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-    customer: {...customer, login},
-    seller: {...seller, login},
+    customer: {...customer, login, logOut},
+    seller: {...seller, login, logOut},
     product,
     order,
 };

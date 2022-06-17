@@ -22,7 +22,7 @@ export const appFetch = async ({
 
     const json = await response.json();
 
-    if (response.status > 200) {
+    if (response.status >= 300) {
         throw JSON.stringify({...json, failed: true});
     } else {
         return json.data;

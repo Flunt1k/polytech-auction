@@ -8,9 +8,13 @@ import {
     Center,
     InputRightElement,
     InputGroup,
+    Box,
     chakra,
 } from '@chakra-ui/react';
+
 import {useForm} from 'react-hook-form';
+
+import {useNavigate} from 'react-router-dom';
 
 const AuthPage = () => {
     const {
@@ -26,6 +30,12 @@ const AuthPage = () => {
     const [show, setShow] = React.useState(false);
 
     const handleClick = () => setShow(!show);
+
+    const navigate = useNavigate();
+
+    const registrationRedirectHandler = () => {
+        navigate('/registration');
+    };
 
     const onSubmit = () => {
         return new Promise<void>((resolve) => {
@@ -97,15 +107,14 @@ const AuthPage = () => {
                         {errors?.password?.message}
                     </FormErrorMessage>
                 </FormControl>
-                <Button
-                    colorScheme="teal"
-                    isLoading={isSubmitting}
-                    type="submit"
-                    position="absolute"
-                    bottom="0"
-                >
-                    Войти
-                </Button>
+                <Box display="flex" width="100%" justifyContent="space-evenly">
+                    <Button colorScheme="teal" isLoading={isSubmitting} type="submit">
+                        Войти
+                    </Button>
+                    <Button colorScheme="blue" onClick={registrationRedirectHandler}>
+                        Зарегестрироваться
+                    </Button>
+                </Box>
             </Form>
         </Center>
     );
