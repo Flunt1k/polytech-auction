@@ -3,6 +3,10 @@ import {Seller} from '../db/models/Seller';
 import {Order} from '../db/models/Order';
 import '../db';
 import {Product} from '../db/models/Product';
+import bcrypt from 'bcryptjs';
+import SECRETS from '../secrets';
+import fs from 'fs';
+import path from 'path';
 
 const createCustomer = () => {
     return (
@@ -11,7 +15,7 @@ const createCustomer = () => {
             name: 'Test_Customer_Name',
             lastName: 'Test_Customer_Last_Name',
             phone: '89112223344',
-            password: 'test_password',
+            password: bcrypt.hashSync('test_password', bcrypt.genSaltSync(SECRETS.SALT)),
             email: 'test@gmail.com',
         })
             .then((res: Customer) => res)
@@ -27,7 +31,7 @@ const createSeller = () => {
             name: 'Test_Seller_Name',
             lastName: 'Test_Seller_Last_Name',
             phone: '89556667788',
-            password: 'test_seller',
+            password: bcrypt.hashSync('test_seller', bcrypt.genSaltSync(SECRETS.SALT)),
             email: 'test_seller@gmail.com',
         })
             .then((res: Seller) => res)
@@ -39,7 +43,7 @@ const createSeller = () => {
 const createProduct = (sellerId: string) => {
     return Product.create({
         productName: 'Test_Product',
-        image: 'IMAGE_LINK',
+        image: fs.readFileSync(path.resolve(__dirname, 'abc.png')),
         description: 'Test_Description',
         year: '2021',
         buyInPrice: 10200,

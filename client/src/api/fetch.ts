@@ -15,7 +15,7 @@ export const appFetch = async ({
         method,
         headers: {
             'Content-Type': 'application/json',
-            Authorization: token || '',
+            Authorization: `Bearer ${token}` || '',
         },
         body: data ? JSON.stringify(data) : undefined,
     });
