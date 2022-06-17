@@ -3,6 +3,7 @@ import thunk, {ThunkDispatch} from 'redux-thunk';
 import {userReducer} from './user/reducer';
 import {Customer, Product, Seller} from '../types';
 import {productsReducer} from './products/reducer';
+import {decodeJwt} from '../utils/jwt';
 
 export type GlobalState = {
     user: {
@@ -24,7 +25,20 @@ const composeEnhancers =
 
 const rootReducer = combineReducers({user: userReducer, products: productsReducer});
 
-export const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
+const checkTokenExpirationMiddleware = (store: any) => (next: any) => (action: any) => {
+    const token = JSON.parse(localStorage.getItem('token') || '');
+    if (decodeJwt(token).exp < Date.now() / 1000) {
+        next(action);
+        localStorage.removeItem('token');
+    }
+
+    next(action);
+};
+
+export const store = createStore(
+    rootReducer,
+    composeEnhancers(applyMiddleware(...[thunk, checkTokenExpirationMiddleware])),
+);
 
 store.subscribe(() => {
     localStorage.setItem('token', store.getState().user.token || '');
