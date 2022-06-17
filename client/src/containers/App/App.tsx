@@ -4,6 +4,7 @@ import {FaHome} from 'react-icons/fa';
 import {MdSell} from 'react-icons/md';
 import {AsideMenuConfig, Navigation} from '../../components/Navigation/Navigation';
 import AuthPage from '../../pages/auth';
+import RegPage from '../../pages/reg'
 
 const ASIDE_MENU_BUTTONS: AsideMenuConfig[] = [
     {
@@ -27,6 +28,6 @@ export const App = () => {
         //     </Box>
         //     <Box height="100vh" flex="1"></Box>
         // </Flex>
-        <AuthPage />
+        <RegPage />
     );
 };
