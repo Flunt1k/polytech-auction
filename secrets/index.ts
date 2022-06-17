@@ -10,6 +10,8 @@ type ServerAppSecrets = {
     DB_NAME: string;
     SERT_PATH: string;
     SERVER_PORT: number | string;
+    SALT: number;
+    JWT_SECRET: string | number | Buffer;
 };
 
 const SECRETS: ServerAppSecrets = {
@@ -20,6 +22,8 @@ const SECRETS: ServerAppSecrets = {
     DB_NAME: process.env.DB_NAME || '',
     SERT_PATH: process.env.SERT_PATH || '',
     SERVER_PORT: process.env.SERVER_PORT || 3000,
+    SALT: process.env.SALT ? Number(process.env.SALT) : 10,
+    JWT_SECRET: process.env.JWT_SECRET || '10',
 };
 
 export default SECRETS;

@@ -4,10 +4,14 @@ import {Op} from 'sequelize';
 import {ModelStatic} from 'sequelize-typescript';
 import {Order} from '../../db/models/Order';
 import {Product} from '../../db/models/Product';
+import bcrypt from 'bcryptjs';
+import SECRETS from '../../secrets';
 
 export class SellerServiceImpl implements SellerService {
     async create(args: SellerCreateArgs): Promise<Seller> {
-        return Seller.create(args)
+        const salt = bcrypt.genSaltSync(SECRETS.SALT);
+        const password = await bcrypt.hash(args.password, salt);
+        return Seller.create({...args, password})
             .then((res) => {
                 return res;
             })

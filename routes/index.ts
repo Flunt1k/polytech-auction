@@ -1,5 +1,6 @@
+import express, {Express, Request, Response, NextFunction} from 'express';
+import passport from 'passport';
 import {RouterMap} from '../types/misc';
-import express, {Express} from 'express';
 import {BaseController} from '../controllers';
 
 type RoutesConfig = {
@@ -17,7 +18,16 @@ export default function (app: Express, args: RoutesConfig[]) {
         const controllerSettings = controller.init();
 
         controllerSettings.forEach((settings) => {
-            router[settings.handlerType](settings.path, (req, res, next) => {
+            const isIgnoreJwt =
+                (path === 'customer' || path === 'seller') && settings.methodName === 'create';
+
+            const middleware = isIgnoreJwt
+                ? (_req: Request, _res: Response, next: NextFunction) => {
+                      next();
+                  }
+                : passport.authenticate('jwt', {session: false});
+
+            router[settings.handlerType](settings.path, middleware, (req, res, next) => {
                 settings.method(req, res).catch((err: any) => {
                     next(err);
                 });
