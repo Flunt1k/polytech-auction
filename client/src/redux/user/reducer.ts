@@ -7,7 +7,7 @@ type UserState = {
 };
 
 const initialState: UserState = {
-    token: undefined,
+    token: localStorage.getItem('token') || '',
     user: undefined,
 };
 
