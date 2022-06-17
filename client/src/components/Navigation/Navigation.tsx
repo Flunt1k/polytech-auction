@@ -81,6 +81,7 @@ export const Navigation: React.FC<NavigationProps> = ({config}) => {
                     {config.map(({openText, icon, aria}) => {
                         return (
                             <MenuButton
+                                key={aria}
                                 isOpen={isOpen}
                                 icon={icon}
                                 buttonText={openText}

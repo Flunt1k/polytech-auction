@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Flex, Input} from '@chakra-ui/react';
+import {Box, Flex} from '@chakra-ui/react';
 import {FaHome} from 'react-icons/fa';
 import {MdSell} from 'react-icons/md';
 import {AsideMenuConfig, Navigation} from '../../components/Navigation/Navigation';

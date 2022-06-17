@@ -39,7 +39,7 @@ const createSeller = () => {
 const createProduct = (sellerId: string) => {
     return Product.create({
         productName: 'Test_Product',
-        imageLink: 'IMAGE_LINK',
+        image: 'IMAGE_LINK',
         description: 'Test_Description',
         year: '2021',
         buyInPrice: 10200,

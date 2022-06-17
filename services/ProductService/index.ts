@@ -5,6 +5,13 @@ import {Seller} from '../../db/models/Seller';
 import {ModelStatic} from 'sequelize-typescript';
 import {Customer} from '../../db/models/Customer';
 
+const validateIsExpired = (product: Product) => {
+    const prDatetime = new Date(product.deadline).getTime();
+    const currDatetime = new Date(Date.now()).getTime();
+
+    return currDatetime > prDatetime;
+};
+
 export class ProductServiceImpl implements ProductService {
     create(args: ProductCreateArgs): Promise<Product> {
         return Product.create(args)
@@ -30,7 +37,7 @@ export class ProductServiceImpl implements ProductService {
     }): Promise<Product[]> {
         const {limit, offset, includeOrder, includeOwner} = args;
 
-        const searchOptions = {limit, offset} as {
+        const searchOptions = {limit, offset, where: {expired: false}} as {
             include?: any;
             limit?: number;
             offset?: number;
@@ -51,7 +58,23 @@ export class ProductServiceImpl implements ProductService {
         }
 
         return Product.findAll(searchOptions)
-            .then((res) => res)
+            .then(async (res) => {
+                const expiredIds: Set<string> = new Set<string>([]);
+                const filtered = res.filter((pr) => {
+                    const isDatetimeExpired = validateIsExpired(pr);
+
+                    if (isDatetimeExpired) {
+                        expiredIds.add(pr.id);
+                        return false;
+                    }
+
+                    return true;
+                });
+
+                await Product.update({expired: true}, {where: {id: Array.from(expiredIds)}});
+
+                return filtered;
+            })
             .catch((err) => {
                 throw new Error(err);
             });
@@ -76,7 +99,27 @@ export class ProductServiceImpl implements ProductService {
         }
 
         return Product.findByPk(productId, searchOptions)
-            .then((res) => res)
+            .then(async (res) => {
+                if (res === null) {
+                    return null;
+                }
+
+                const isExpired = res.expired;
+
+                if (isExpired) {
+                    await Product.update({expired: true}, {where: {id: res.id}});
+                    return null;
+                }
+
+                const isProductExpired = validateIsExpired(res);
+
+                if (isProductExpired) {
+                    await Product.update({expired: true}, {where: {id: res.id}});
+                    res.expired = true;
+                }
+
+                return res;
+            })
             .catch((err) => {
                 throw new Error(err);
             });
