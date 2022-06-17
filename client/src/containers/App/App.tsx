@@ -1,8 +1,7 @@
 import React from 'react';
 import {Box, Flex} from '@chakra-ui/react';
 import {FaHome} from 'react-icons/fa';
-import {MdSell} from 'react-icons/md';
-import {GrAdd} from 'react-icons/gr';
+import {MdSell, MdAddBox} from 'react-icons/md';
 import {Routes, Route, Navigate, useLocation} from 'react-router-dom';
 import {AsideMenuConfig, Navigation} from '../../components/Navigation/Navigation';
 import {useDispatch, useSelector} from 'react-redux';
@@ -71,7 +70,7 @@ export const App = () => {
         if (user?.type === 'seller') {
             arr.push({
                 openText: 'Создать предложение',
-                icon: GrAdd,
+                icon: MdAddBox,
                 aria: 'create-order',
                 onClick: () => {
                     setIsOpen(true);
