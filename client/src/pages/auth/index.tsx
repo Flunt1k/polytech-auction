@@ -39,8 +39,9 @@ const AuthPage = () => {
                         pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
                     })}
                 />
+                <FormErrorMessage>{errors?.email?.message}</FormErrorMessage>
             </FormControl>
-            <FormControl>
+            <FormControl isInvalid={errors?.password}>
                 <Input
                     isInvalid={errors?.password}
                     type="password"
@@ -51,7 +52,7 @@ const AuthPage = () => {
                         maxLength: {value: 10, message: 'Пароль должен быть меньше 10-ти символов'},
                     })}
                 />
-                <p>{errors?.password?.message || null}</p>
+                <FormErrorMessage>{errors?.password?.message}</FormErrorMessage>
             </FormControl>
             <Button colorScheme="teal" isLoading={isSubmitting} type="submit">
                 Submit
