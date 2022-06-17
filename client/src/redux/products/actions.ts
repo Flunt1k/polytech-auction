@@ -1,7 +1,6 @@
 import {Product} from '../../types';
-import {Dispatch} from 'redux';
 import api from '../../api';
-import {GlobalState} from '../store';
+import {AppDispatch, GlobalState} from '../store';
 
 export const SET_PRODUCTS = Symbol('SET_PRODUCTS');
 
@@ -16,12 +15,11 @@ export const setProducts = (products: Product[]): SetProductsAction => ({
 });
 
 export const fetchAllProducts = () => {
-    return async (dispatch: any, getState: () => GlobalState) => {
+    return async (dispatch: AppDispatch, getState: () => GlobalState) => {
         const state = getState();
         const token = state.user.token;
-        console.log(token);
-        const products = await api.product.getProduct({}, token);
-        console.log(products);
+        const products = (await api.product.getProduct({}, token)) as {products: Product[]};
+        dispatch(setProducts(products.products));
     };
 };
 
