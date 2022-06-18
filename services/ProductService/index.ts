@@ -137,6 +137,28 @@ export class ProductServiceImpl implements ProductService {
             });
     }
 
+    async getBySellerId(args: {sellerId: string; includeOrder: boolean}): Promise<Product[]> {
+        const {sellerId, includeOrder} = args;
+        const searchOptions = {} as {include?: ModelStatic[]};
+
+        if (includeOrder) {
+            searchOptions.include = [Order, Customer];
+        }
+
+        return Product.findAll({where: {ownerId: sellerId}, ...searchOptions})
+            .then(async (res) => {
+                return res.map((r: Product) => {
+                    return {
+                        ...r,
+                        image: r.image.toString(),
+                    } as unknown as Product;
+                });
+            })
+            .catch((err) => {
+                throw new Error(err);
+            });
+    }
+
     update(productId: string, updateData: Partial<Product>): Promise<Product | null> {
         return Product.update(updateData, {where: {id: productId}})
             .then(() => {

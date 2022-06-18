@@ -1,4 +1,4 @@
-import {Product, ProductCreateArgs} from '../../types';
+import {Product, ProductCreateArgs, ProductGetArgs} from '../../types';
 import api from '../../api';
 import {AppDispatch, GlobalState} from '../store';
 
@@ -29,6 +29,19 @@ export const createProduct = (args: ProductCreateArgs) => {
         const response = await api.product.createProduct(args, token);
 
         return response.product.id;
+    };
+};
+
+export const getProductsBySellerId = () => {
+    return async (dispatch: AppDispatch, getState: () => GlobalState) => {
+        const state = getState();
+        const token = state.user.token;
+        const user = state.user.user;
+        const products = (await api.product.getProduct({sellerId: user.id}, token)) as {
+            products: Product[];
+        };
+
+        dispatch(setProducts(products.products));
     };
 };
 

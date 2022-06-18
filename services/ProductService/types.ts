@@ -15,4 +15,5 @@ export interface ProductService {
         includeOwner: boolean;
         includeOrder: boolean;
     }) => Promise<Product[]>;
+    getBySellerId: (args: {sellerId: string; includeOrder: boolean}) => Promise<Product[]>;
 }

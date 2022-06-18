@@ -43,11 +43,16 @@ export const CreateProductModal: React.FC<Props> = (props: Props) => {
     const initialRef = React.useRef(null);
 
     const handleCreateProduct = React.useCallback(async () => {
-        if (formState) {
-            const id = await dispatch(createProduct({...formState, ownerId: user?.id}));
+        if (formState && user) {
+            const id = await dispatch(createProduct({...formState, ownerId: user.id}));
             navigate(`/product/${id}`);
+            props.onClose();
         }
-    }, [dispatch, formState]);
+    }, [dispatch, formState, navigate, props, user?.id]);
+
+    if (!user) {
+        return null;
+    }
 
     const {isOpen} = props;
 
@@ -108,7 +113,7 @@ export const CreateProductModal: React.FC<Props> = (props: Props) => {
                         <Input
                             type="number"
                             required={true}
-                            value={Number(formState.initialPrice)}
+                            value={Number(formState.initialPrice || 0)}
                             onChange={(event) =>
                                 setFormState((prevState: ProductCreateArgs) => ({
                                     ...prevState,
@@ -122,7 +127,7 @@ export const CreateProductModal: React.FC<Props> = (props: Props) => {
                         <FormLabel>Цена выкупа (не обязательн)</FormLabel>
                         <Input
                             type="number"
-                            value={Number(formState.buyInPrice)}
+                            value={Number(formState.buyInPrice || 0)}
                             required={false}
                             onChange={(event) =>
                                 setFormState((prevState: ProductCreateArgs) => ({
@@ -197,9 +202,9 @@ export const CreateProductModal: React.FC<Props> = (props: Props) => {
                             }
                         }}
                     >
-                        Save
+                        Создать
                     </Button>
-                    <Button onClick={props.onClose}>Cancel</Button>
+                    <Button onClick={props.onClose}>Отмена</Button>
                 </ModalFooter>
             </ModalContent>
         </Modal>

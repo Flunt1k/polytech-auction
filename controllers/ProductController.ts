@@ -70,12 +70,13 @@ export class ProductController extends BaseController {
     };
 
     getProduct = async (req: Request, res: Response) => {
-        const {productId, includeOrder, includeOwner, limit, offset} = req.query as {
+        const {productId, includeOrder, includeOwner, limit, offset, sellerId} = req.query as {
             productId?: string;
             includeOrder?: number;
             includeOwner?: number;
             limit?: number;
             offset?: number;
+            sellerId?: string;
         };
 
         try {
@@ -93,6 +94,13 @@ export class ProductController extends BaseController {
                         data: {message: `Продукт с таким id не найден [${productId}]`},
                     });
                 }
+            } else if (sellerId) {
+                const products = await this.productService.getBySellerId({
+                    sellerId,
+                    includeOrder: Boolean(includeOrder),
+                });
+
+                res.status(200).json({data: {products}});
             } else {
                 const products = await this.productService.getAll({
                     limit,

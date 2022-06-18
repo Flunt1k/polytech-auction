@@ -58,6 +58,7 @@ export type ProductDeleteResponse = {
 export type ProductGetArgs = {
     productId?: string;
     includeOrder?: boolean;
+    sellerId?: string;
     includeOwner?: boolean;
     limit?: number;
     offset?: number;

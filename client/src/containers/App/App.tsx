@@ -65,20 +65,27 @@ export const App = () => {
     const token = useSelector(selectToken);
 
     const [isOpen, setIsOpen] = React.useState(false);
+    const [isLoading, setIsLoading] = React.useState(false);
 
     React.useEffect(() => {
-        if (token) {
-            const decodedToken = decodeJwt(token);
-            if (decodedToken.type) {
-                const args: any = {};
-                if (decodedToken.type === 'customer') {
-                    args.customerId = decodedToken.id;
-                } else {
-                    args.sellerId = decodedToken.id;
+        async function load() {
+            if (token) {
+                const decodedToken = decodeJwt(token);
+                if (decodedToken.type) {
+                    const args: any = {};
+                    if (decodedToken.type === 'customer') {
+                        args.customerId = decodedToken.id;
+                    } else {
+                        args.sellerId = decodedToken.id;
+                    }
+                    setIsLoading(true);
+                    await dispatch(fetchUser(args, decodedToken.type));
+                    setIsLoading(false);
                 }
-                dispatch(fetchUser(args, decodedToken.type));
             }
         }
+
+        load();
     }, [dispatch, token]);
 
     const menuButtons = React.useMemo(() => {
@@ -98,7 +105,7 @@ export const App = () => {
         return arr;
     }, [user?.type]);
 
-    if (!user && token) {
+    if (isLoading) {
         return (
             <Center height="100vh" width="100vw">
                 <Spinner

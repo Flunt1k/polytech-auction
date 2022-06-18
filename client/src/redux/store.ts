@@ -1,9 +1,10 @@
 import {AnyAction, applyMiddleware, combineReducers, compose, createStore} from 'redux';
 import thunk, {ThunkDispatch} from 'redux-thunk';
 import {userReducer} from './user/reducer';
-import {Customer, Product, Seller} from '../types';
+import {Customer, Order, Product, Seller} from '../types';
 import {productsReducer} from './products/reducer';
 import {decodeJwt} from '../utils/jwt';
+import {ordersReducer} from './orders/reducer';
 
 export type GlobalState = {
     user: {
@@ -12,6 +13,9 @@ export type GlobalState = {
     };
     products: {
         products: Product[];
+    };
+    orders: {
+        orders: Order[];
     };
 };
 
@@ -23,7 +27,11 @@ const composeEnhancers =
         window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
     compose;
 
-const rootReducer = combineReducers({user: userReducer, products: productsReducer});
+const rootReducer = combineReducers({
+    user: userReducer,
+    products: productsReducer,
+    orders: ordersReducer,
+});
 
 const checkTokenExpirationMiddleware = (store: any) => (next: any) => (action: any) => {
     const token = localStorage.getItem('token') || '';

@@ -22,7 +22,8 @@ export const ProductCard: React.FC<Props> = (props: Props) => {
         <GridItem>
             <Center>
                 <Box
-                    maxW="sm"
+                    width="sm"
+                    height="sm"
                     borderWidth="1px"
                     borderRadius="lg"
                     borderColor="antiquewhite"
@@ -31,7 +32,12 @@ export const ProductCard: React.FC<Props> = (props: Props) => {
                     _hover={{transform: 'scale(1.05)'}}
                     onClick={() => navigate(`/product/${id}`)}
                 >
-                    <Image src={`data:image/png;base64,${image}`} />
+                    <Image
+                        src={`data:image/png;base64,${image}`}
+                        width="100%"
+                        height="220px"
+                        borderBottom="1px solid white"
+                    />
 
                     <Box p="6">
                         <Box display="flex" alignItems="baseline">
@@ -50,12 +56,14 @@ export const ProductCard: React.FC<Props> = (props: Props) => {
                             Название: {title}
                         </Box>
 
-                        <Box>
-                            Цена выкупа: {buyInPrice}
-                            <Box as="span" color="white.600" fontSize="sm">
-                                / руб
+                        {buyInPrice && (
+                            <Box>
+                                Цена выкупа: {buyInPrice}
+                                <Box as="span" color="white.600" fontSize="sm">
+                                    / руб
+                                </Box>
                             </Box>
-                        </Box>
+                        )}
                         <Box>
                             Стартовая ставка: {initialPrice}
                             <Box as="span" color="white.600" fontSize="sm">
