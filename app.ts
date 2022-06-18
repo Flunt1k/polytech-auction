@@ -10,16 +10,12 @@ import {Seller} from './db/models/Seller';
 import {generateJwtToken} from './utils/jwt';
 
 import './utils/auth';
+import path from 'path';
 
 const app = express();
 
 app.use(express.urlencoded({extended: true, limit: '50mb'}));
 app.use(express.json({limit: '50mb'}));
-
-app.post('*', (req, _res, next) => {
-    console.log(req.body);
-    next();
-});
 
 app.post('/login', function (req, res) {
     passport.authenticate(
@@ -97,5 +93,15 @@ routes(app, [
         Controller: ProductController,
     },
 ]);
+
+if (process.env.MODE === 'production') {
+    console.log(path.join(__dirname, 'client/build'));
+    app.use(express.static(path.join(__dirname, 'client/build')));
+    app.use(express.static(path.join(__dirname, 'client/public')));
+    app.use((req, res) => {
+        console.log(req.path);
+        res.sendFile(path.resolve(__dirname, 'client/build/index.html'));
+    });
+}
 
 export default app;
