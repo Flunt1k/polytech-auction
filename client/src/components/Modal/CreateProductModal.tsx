@@ -108,7 +108,7 @@ export const CreateProductModal: React.FC<Props> = (props: Props) => {
                         <Input
                             type="number"
                             required={true}
-                            value={formState.initialPrice}
+                            value={Number(formState.initialPrice)}
                             onChange={(event) =>
                                 setFormState((prevState: ProductCreateArgs) => ({
                                     ...prevState,
@@ -122,7 +122,7 @@ export const CreateProductModal: React.FC<Props> = (props: Props) => {
                         <FormLabel>Цена выкупа (не обязательн)</FormLabel>
                         <Input
                             type="number"
-                            value={formState.buyInPrice}
+                            value={Number(formState.buyInPrice)}
                             required={false}
                             onChange={(event) =>
                                 setFormState((prevState: ProductCreateArgs) => ({
