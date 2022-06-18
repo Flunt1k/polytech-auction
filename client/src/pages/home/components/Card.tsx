@@ -28,7 +28,7 @@ export const Card: React.FC<Props> = ({
     return (
         <GridItem>
             <Box
-                padding="3px"
+                padding="15px"
                 maxWidth="xs"
                 borderWidth="1px"
                 borderRadius="lg"

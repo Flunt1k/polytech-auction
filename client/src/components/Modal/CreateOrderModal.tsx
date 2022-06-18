@@ -37,7 +37,7 @@ export const CreateOrderModal: React.FC<Props> = (props: Props) => {
 
     const [formState, setFormState] = React.useState<OrderCreateArgs>({
         deliveryAddress: '',
-        bet: 0,
+        bet: isBuyIn ? minBet : 0,
         isBuyIn,
         email,
         phone,
