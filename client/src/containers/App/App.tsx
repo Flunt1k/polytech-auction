@@ -171,7 +171,7 @@ export const App = () => {
                     </Routes>
                 </Box>
             </Flex>
-            <CreateProductModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+            {isOpen && <CreateProductModal isOpen={isOpen} onClose={() => setIsOpen(false)} />}
         </React.Fragment>
     );
 };

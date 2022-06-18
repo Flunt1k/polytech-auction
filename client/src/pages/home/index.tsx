@@ -64,22 +64,43 @@ const HomePage = () => {
                 </Box>
             </Flex>
             <Divider margin={'15px 0 '} backgroundColor={'white'} />
-            <Heading size="lg">Заказы</Heading>
+            {isCustomer && (
+                <React.Fragment>
+                    <Heading size="lg">Заказы</Heading>
+                    <Grid templateColumns={'repeat(5, auto)'}>
+                        {orders.map(({id, product, bet, isBuyIn}) => {
+                            return (
+                                <Card
+                                    key={id}
+                                    title={product.productName}
+                                    bet={bet}
+                                    isBuyIn={isBuyIn}
+                                    datetime={product.deadline}
+                                    id={product.id}
+                                />
+                            );
+                        })}
+                    </Grid>
+                </React.Fragment>
+            )}
             {isSeller && (
-                <Grid templateColumns={'repeat(5, auto)'}>
-                    {products.map(({id, productName, initialPrice, buyInPrice, deadline}) => {
-                        return (
-                            <Card
-                                key={id}
-                                title={productName}
-                                price={buyInPrice}
-                                price2={initialPrice}
-                                datetime={deadline}
-                                id={id}
-                            />
-                        );
-                    })}
-                </Grid>
+                <React.Fragment>
+                    <Heading size="lg">Предложения</Heading>
+                    <Grid templateColumns={'repeat(5, auto)'}>
+                        {products.map(({id, productName, initialPrice, buyInPrice, deadline}) => {
+                            return (
+                                <Card
+                                    key={id}
+                                    title={productName}
+                                    price={buyInPrice}
+                                    price2={initialPrice}
+                                    datetime={deadline}
+                                    id={id}
+                                />
+                            );
+                        })}
+                    </Grid>
+                </React.Fragment>
             )}
         </React.Fragment>
     );

@@ -43,7 +43,7 @@ export const Card: React.FC<Props> = ({
                 }}
                 margin="10px"
             >
-                {isBuyIn && (
+                {Boolean(isBuyIn) && (
                     <Badge borderRadius="full" px="2" colorScheme="teal">
                         Выкуп
                     </Badge>
@@ -53,7 +53,7 @@ export const Card: React.FC<Props> = ({
                         Ставка от пользователя: {author}
                     </Box>
                 )}
-                {isBuyIn && bet && (
+                {Boolean(isBuyIn) && bet && (
                     <Box>
                         Выкупил за: {bet}
                         <Box as="span" color="white.600" fontSize="sm">

@@ -24,12 +24,13 @@ export default {
             throw new Error(err);
         }
     },
-    createOrder: async (args: OrderCreateArgs): Promise<OrderCreateResponse> => {
+    createOrder: async (args: OrderCreateArgs, token: string): Promise<OrderCreateResponse> => {
         try {
             return await appFetch({
                 path: '/api/order',
                 method: 'post',
                 data: args,
+                token,
             });
         } catch (err: any) {
             throw new Error(err);

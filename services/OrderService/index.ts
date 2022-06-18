@@ -67,7 +67,12 @@ export class OrderServiceImpl implements OrderService {
     }
 
     getAllByCustomerId(customerId: string): Promise<Order[]> {
-        return Order.findAll({where: {customerId}, include: [Customer, Product, Seller]})
+        return Order.findAll({
+            where: {customerId},
+            include: [Customer, Product, Seller],
+            raw: true,
+            nest: true,
+        })
             .then((res) => res)
             .catch((err) => {
                 throw new Error(err);

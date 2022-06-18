@@ -33,8 +33,8 @@ export const CreateProductModal: React.FC<Props> = (props: Props) => {
     const [formState, setFormState] = React.useState<ProductCreateArgs>({
         productName: '',
         image: '',
-        buyInPrice: undefined,
-        initialPrice: undefined,
+        buyInPrice: 0,
+        initialPrice: 0,
         deadline: undefined,
         description: '',
         year: '',
@@ -55,6 +55,8 @@ export const CreateProductModal: React.FC<Props> = (props: Props) => {
     }
 
     const {isOpen} = props;
+
+    console.log(formState);
 
     return (
         <Modal isOpen={isOpen} onClose={props.onClose} initialFocusRef={initialRef}>
@@ -113,11 +115,14 @@ export const CreateProductModal: React.FC<Props> = (props: Props) => {
                         <Input
                             type="number"
                             required={true}
-                            value={Number(formState.initialPrice || 0)}
+                            value={Number(formState.initialPrice) || undefined}
                             onChange={(event) =>
                                 setFormState((prevState: ProductCreateArgs) => ({
                                     ...prevState,
-                                    initialPrice: +event.target.value,
+                                    initialPrice:
+                                        prevState.initialPrice === 0
+                                            ? prevState.initialPrice + +event.target.value
+                                            : +event.target.value,
                                 }))
                             }
                         />
@@ -127,7 +132,7 @@ export const CreateProductModal: React.FC<Props> = (props: Props) => {
                         <FormLabel>Цена выкупа (не обязательн)</FormLabel>
                         <Input
                             type="number"
-                            value={Number(formState.buyInPrice || 0)}
+                            value={Number(formState.buyInPrice) || undefined}
                             required={false}
                             onChange={(event) =>
                                 setFormState((prevState: ProductCreateArgs) => ({
@@ -163,7 +168,10 @@ export const CreateProductModal: React.FC<Props> = (props: Props) => {
                                 reader.onloadend = () => {
                                     setFormState((prevState) => ({
                                         ...prevState,
-                                        image: reader.result as string,
+                                        image: (reader.result as string).replace(
+                                            'data:image/png;base64,',
+                                            '',
+                                        ),
                                     }));
                                 };
                                 if (file) {

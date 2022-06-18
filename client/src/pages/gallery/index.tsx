@@ -1,5 +1,5 @@
 import React from 'react';
-import {Center, Grid, Spinner} from '@chakra-ui/react';
+import {Center, Grid, Heading, Spinner} from '@chakra-ui/react';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch} from '../../redux/store';
 import {selectProducts} from '../../redux/products/selectors';
@@ -11,11 +11,19 @@ const GalleryPage = () => {
     const dispatch = useDispatch<AppDispatch>();
     const products = useSelector(selectProducts);
 
+    const [isLoading, setIsLoading] = React.useState(true);
+
     React.useEffect(() => {
-        dispatch(fetchAllProducts());
+        setIsLoading(true);
+        async function load() {
+            await dispatch(fetchAllProducts());
+            setIsLoading(false);
+        }
+
+        load().catch(() => setIsLoading(false));
     }, [dispatch]);
 
-    if (!products.length) {
+    if (isLoading) {
         return (
             <Center width="100%" height="100%">
                 <Spinner
@@ -25,6 +33,14 @@ const GalleryPage = () => {
                     color="blue.500"
                     size="xl"
                 />
+            </Center>
+        );
+    }
+
+    if (products.length === 0) {
+        return (
+            <Center width="100%" height="100%">
+                <Heading color="red">Товаров для покупки нет</Heading>
             </Center>
         );
     }

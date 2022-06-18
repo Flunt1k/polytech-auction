@@ -19,13 +19,13 @@ export type Order = {
 };
 
 export type OrderCreateArgs = {
-    orderId: string;
     customerId: string;
     productId: string;
+    sellerId: string;
     phone: string;
     email: string;
     deliveryAddress: string;
-    isBuyIn: boolean;
+    isBuyIn?: boolean;
     bet: number;
 };
 
