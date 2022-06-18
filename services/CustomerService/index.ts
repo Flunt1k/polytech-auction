@@ -11,7 +11,7 @@ export class CustomerServiceImpl implements CustomerService {
         try {
             const salt = bcrypt.genSaltSync(SECRETS.SALT);
             const password = await bcrypt.hash(args.password, salt);
-            return Customer.create({...args, password});
+            return await Customer.create({...args, password});
         } catch (e: any) {
             throw new Error(e);
         }

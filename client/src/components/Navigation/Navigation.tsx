@@ -1,4 +1,4 @@
-import React, {ReactElement} from 'react';
+import React from 'react';
 import {Box, Button, Center, Flex, Icon, IconButton, Spacer} from '@chakra-ui/react';
 import {RiAuctionFill} from 'react-icons/ri';
 import {BsArrowRightSquare} from 'react-icons/bs';
@@ -7,7 +7,6 @@ import {IconType} from 'react-icons';
 import {useNavigate} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import {setToken} from '../../redux/user/actions';
-import api from '../../api';
 
 export type AsideMenuConfig = {
     openText: string;
@@ -70,9 +69,8 @@ export const Navigation: React.FC<NavigationProps> = ({config}) => {
     const dispatch = useDispatch();
 
     const logOutHandler = () => {
-        api.customer.logOut().then(() => {
-            dispatch(setToken(''));
-        });
+        localStorage.removeItem('token')
+        dispatch(setToken(''));
     };
 
     React.useEffect(() => {

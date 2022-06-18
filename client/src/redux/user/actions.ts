@@ -15,10 +15,13 @@ export type SetUserAction = {
     payload: Customer | Seller;
 };
 
-export const setToken = (token: string): SetTokenAction => ({
-    type: SET_TOKEN,
-    payload: token,
-});
+export const setToken = (token: string): SetTokenAction => {
+    localStorage.setItem('token', token)
+    return ({
+        type: SET_TOKEN,
+        payload: token,
+    })
+};
 
 export const setUser = (user: Customer | Seller): SetUserAction => ({
     type: SET_USER,

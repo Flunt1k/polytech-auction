@@ -12,8 +12,13 @@ import {
     Select,
 } from '@chakra-ui/react';
 import {useForm} from 'react-hook-form';
+import {useDispatch} from 'react-redux';
+import {useNavigate} from 'react-router-dom';
+
+import {setUser, setToken} from '../../redux/user/actions';
 
 import api from '../../api';
+import {SellerCreateArgs, CustomerCreateArgs} from '../../types';
 
 const RegPage = () => {
     const {
@@ -29,22 +34,38 @@ const RegPage = () => {
 
     const [show, setShow] = React.useState(false);
 
+    const dispatch = useDispatch();
+
+    const navigate = useNavigate();
+
     const handleClick = () => setShow(!show);
 
     const onSubmit = () => {
-        const formData = getValues();
+        return new Promise<void>((resolve) => {
+            const formData = getValues();
 
-        if (formData.userType === 'customer') {
-            delete formData.userType;
+            if (formData.userType === 'customer') {
+                delete formData.userType;
 
-            api.customer.createCustomer(formData);
-        }
+                api.customer.createCustomer(formData as CustomerCreateArgs).then((res) => {
+                    dispatch(setUser(res.customer));
+                    dispatch(setToken(res.token));
+                    navigate('/')
+                    resolve();
+                });
+            }
 
-        if (formData.userType === 'seller') {
-            delete formData.userType;
+            if (formData.userType === 'seller') {
+                delete formData.userType;
 
-            api.seller.createCustomer(formData);
-        }
+                api.seller.createSeller(formData as SellerCreateArgs).then((res) => {
+                    dispatch(setUser(res.seller));
+                    dispatch(setToken(res.token));
+                    navigate('/');
+                    resolve();
+                });
+            }
+        });
     };
 
     const Form = chakra('form', {

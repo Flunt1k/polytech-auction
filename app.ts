@@ -55,15 +55,6 @@ app.post('/login', function (req, res) {
     )(req, res);
 });
 
-app.post('/logout', function (req, res) {
-    req.logout((err) => {
-        if (err) {
-            res.send(err);
-            return;
-        }
-    });
-});
-
 routes(app, [
     {
         path: 'customer',
