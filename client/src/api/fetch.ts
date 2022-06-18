@@ -11,6 +11,7 @@ export const appFetch = async ({
     token?: string;
     query?: string;
 }) => {
+    console.log(token, data);
     const response = await fetch(`${path}?${query}`, {
         method,
         headers: {
@@ -21,6 +22,10 @@ export const appFetch = async ({
     });
 
     const json = await response.json();
+
+    if (response.status === 401) {
+        localStorage.removeItem('token');
+    }
 
     if (response.status >= 300) {
         throw JSON.stringify({...json, failed: true});

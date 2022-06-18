@@ -30,17 +30,22 @@ export const setUser = (user: Customer | Seller): SetUserAction => ({
 
 export const fetchUser = (args: SellerGetArgs | CustomerGetArgs, type: 'customer' | 'seller') => {
     return async (dispatch: AppDispatch, getState: () => GlobalState) => {
-        const token = getState().user.token;
-        let user: Customer | Seller;
-        if (type === 'customer') {
-            const response = (await api.customer.getCustomer(args, token)) as {customer: Customer};
-            user = response?.customer;
-        } else {
-            const response = (await api.seller.getSeller(args, token)) as {seller: Seller};
-            user = response?.seller;
+        try {
+            const token = getState().user.token;
+            let user: Customer | Seller;
+            if (type === 'customer') {
+                const response = (await api.customer.getCustomer(args, token)) as {
+                    customer: Customer;
+                };
+                user = response?.customer;
+            } else {
+                const response = (await api.seller.getSeller(args, token)) as {seller: Seller};
+                user = response?.seller;
+            }
+            dispatch(setUser(user));
+        } catch (err) {
+            console.log(err);
         }
-
-        dispatch(setUser(user));
     };
 };
 

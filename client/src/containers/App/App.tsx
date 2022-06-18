@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Flex} from '@chakra-ui/react';
+import {Box, Center, Flex, Spinner} from '@chakra-ui/react';
 import {FaHome} from 'react-icons/fa';
 import {MdSell, MdAddBox} from 'react-icons/md';
 import {Routes, Route, Navigate, useLocation} from 'react-router-dom';
@@ -67,20 +67,25 @@ export const App = () => {
     const user = useSelector(selectUser);
     const token = useSelector(selectToken);
 
+    console.log(token, 'token');
+
     const [isOpen, setIsOpen] = React.useState(false);
 
     React.useEffect(() => {
-        const decodedToken = decodeJwt(token);
-        if (decodedToken?.type) {
-            const args: any = {};
-            if (decodedToken.type === 'customer') {
-                args.customerId = decodedToken.id;
-            } else {
-                args.sellerId = decodedToken.id;
+        console.log(token);
+        if (token) {
+            const decodedToken = decodeJwt(token);
+            if (decodedToken.type) {
+                const args: any = {};
+                if (decodedToken.type === 'customer') {
+                    args.customerId = decodedToken.id;
+                } else {
+                    args.sellerId = decodedToken.id;
+                }
+                dispatch(fetchUser(args, decodedToken.type));
             }
-            dispatch(fetchUser(args, decodedToken.type));
         }
-    }, [token]);
+    }, [dispatch, token]);
 
     const menuButtons = React.useMemo(() => {
         const arr = [...ASIDE_MENU_BUTTONS];
@@ -98,6 +103,20 @@ export const App = () => {
 
         return arr;
     }, [user?.type]);
+
+    if (!user && token) {
+        return (
+            <Center height="100vh" width="100vw">
+                <Spinner
+                    thickness="4px"
+                    speed="0.75s"
+                    emptyColor="gray.200"
+                    color="blue.500"
+                    size="xl"
+                />
+            </Center>
+        );
+    }
 
     // @ts-ignore
     return (

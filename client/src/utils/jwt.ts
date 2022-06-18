@@ -5,3 +5,7 @@ export const decodeJwt = (token: string) => {
 
     return JSON.parse(window.atob(token.split('.')[1]));
 };
+
+export const isTokenExists = (token: string) => {
+    return decodeJwt(token).exp > Date.now() / 1000;
+};
