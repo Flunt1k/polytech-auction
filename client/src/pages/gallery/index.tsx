@@ -31,7 +31,7 @@ const GalleryPage = () => {
 
     return (
         <Grid templateColumns="repeat(3, 1fr)" gap={10}>
-            {new Array(42).fill(products[0]).map((product: Product) => {
+            {products.map((product: Product) => {
                 return (
                     <ProductCard
                         id={product.id}

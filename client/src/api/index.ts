@@ -9,6 +9,7 @@ import {Customer, Seller} from '../types';
 const login = async (args: {
     email: string;
     password: string;
+    type: 'customer' | 'seller';
 }): Promise<
     | {user: Customer | Seller; token: string}
     | {message?: string; user?: Customer | Seller; err?: any; info?: any}
@@ -20,14 +21,16 @@ const login = async (args: {
     return response;
 };
 
-const logOut = async () => {
-    await appFetch({path: '/logout', method: 'get'});
-};
-
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-    customer: {...customer, login, logOut},
-    seller: {...seller, login, logOut},
+    customer: {
+        ...customer,
+        login: (args: {email: string; password: string}) => login({...args, type: 'customer'}),
+    },
+    seller: {
+        ...seller,
+        login: (args: {email: string; password: string}) => login({...args, type: 'seller'}),
+    },
     product,
     order,
 };

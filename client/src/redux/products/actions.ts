@@ -24,8 +24,9 @@ export const fetchAllProducts = () => {
 };
 
 export const createProduct = (args: ProductCreateArgs) => {
-    return async (dispatch: AppDispatch): Promise<string> => {
-        const response = await api.product.createProduct(args);
+    return async (dispatch: AppDispatch, getState: () => GlobalState): Promise<string> => {
+        const token = getState().user.token;
+        const response = await api.product.createProduct(args, token);
 
         return response.product.id;
     };

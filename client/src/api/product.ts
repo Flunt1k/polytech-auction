@@ -24,12 +24,16 @@ export default {
             throw new Error(err);
         }
     },
-    createProduct: async (args: ProductCreateArgs): Promise<ProductCreateResponse> => {
+    createProduct: async (
+        args: ProductCreateArgs,
+        token: string,
+    ): Promise<ProductCreateResponse> => {
         try {
             return await appFetch({
                 path: '/api/product',
                 method: 'post',
                 data: args,
+                token,
             });
         } catch (err: any) {
             throw new Error(err);

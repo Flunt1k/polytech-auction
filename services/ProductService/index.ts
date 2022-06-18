@@ -17,7 +17,7 @@ export class ProductServiceImpl implements ProductService {
         return Product.create(args)
             .then((res) => {
                 // @ts-ignore
-                res.image = res.image.toString('base64');
+                res.image = res.image.toString();
                 return res;
             })
             .catch((err) => {
@@ -80,7 +80,7 @@ export class ProductServiceImpl implements ProductService {
                 return filtered.map((r: Product) => {
                     return {
                         ...r,
-                        image: r.image.toString('base64'),
+                        image: r.image.toString(),
                     } as unknown as Product;
                 });
             })
@@ -128,7 +128,7 @@ export class ProductServiceImpl implements ProductService {
                 }
 
                 // @ts-ignore
-                res.image = res.image.toString('base64');
+                res.image = res.image.toString();
 
                 return res;
             })
@@ -145,7 +145,7 @@ export class ProductServiceImpl implements ProductService {
             .then((res) => {
                 if (res) {
                     //@ts-ignore
-                    res.image = res.image.toString('base64');
+                    res.image = res.image.toString();
                 }
                 return res;
             })

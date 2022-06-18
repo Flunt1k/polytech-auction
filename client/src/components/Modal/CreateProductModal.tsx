@@ -18,6 +18,7 @@ import {AppDispatch} from '../../redux/store';
 import {createProduct} from '../../redux/products/actions';
 import {ProductCreateArgs} from '../../types';
 import {selectUser} from '../../redux/user/selectors';
+import {useNavigate} from 'react-router-dom';
 
 type Props = {
     isOpen: boolean;
@@ -26,8 +27,8 @@ type Props = {
 
 export const CreateProductModal: React.FC<Props> = (props: Props) => {
     const dispatch = useDispatch<AppDispatch>();
-
     const user = useSelector(selectUser);
+    const navigate = useNavigate();
 
     const [formState, setFormState] = React.useState<ProductCreateArgs>({
         productName: '',
@@ -41,15 +42,25 @@ export const CreateProductModal: React.FC<Props> = (props: Props) => {
     });
     const initialRef = React.useRef(null);
 
-    const handleCreateProduct = React.useCallback(() => {
+    const handleCreateProduct = React.useCallback(async () => {
         if (formState) {
-            dispatch(createProduct(formState));
+            const id = await dispatch(createProduct({...formState, ownerId: user?.id}));
+            navigate(`/product/${id}`);
         }
-    }, []);
+    }, [dispatch, formState]);
 
     const {isOpen} = props;
 
     console.log(formState);
+    console.log(
+        !formState,
+        !formState.image,
+        formState.deadline,
+        !formState.year,
+        !formState.productName,
+        !formState.initialPrice,
+        !formState.description,
+    );
 
     return (
         <Modal isOpen={isOpen} onClose={props.onClose} initialFocusRef={initialRef}>
@@ -147,13 +158,55 @@ export const CreateProductModal: React.FC<Props> = (props: Props) => {
                             }
                         />
                     </FormControl>
+                    <FormControl mt={4}>
+                        <FormLabel>Дата окончания</FormLabel>
+                        <Input
+                            type="file"
+                            required={false}
+                            onChange={(event) => {
+                                const file = event?.target.files?.[0];
+                                const reader = new FileReader();
+                                reader.onloadend = () => {
+                                    setFormState((prevState) => ({
+                                        ...prevState,
+                                        image: reader.result as string,
+                                    }));
+                                };
+                                if (file) {
+                                    reader.readAsDataURL(new Blob([file], {type: 'image/png'}));
+                                }
+                            }}
+                        />
+                    </FormControl>
                 </ModalBody>
                 <ModalFooter>
                     <Button
                         colorScheme="blue"
                         mr={3}
-                        disabled={!formState}
-                        onClick={handleCreateProduct}
+                        disabled={Boolean(
+                            !formState ||
+                                !formState.image ||
+                                !formState.deadline ||
+                                !formState.year ||
+                                !formState.productName ||
+                                !formState.initialPrice ||
+                                !formState.description,
+                        )}
+                        onClick={() => {
+                            if (
+                                !Boolean(
+                                    !formState ||
+                                        !formState.image ||
+                                        !formState.deadline ||
+                                        !formState.year ||
+                                        !formState.productName ||
+                                        !formState.initialPrice ||
+                                        !formState.description,
+                                )
+                            ) {
+                                handleCreateProduct();
+                            }
+                        }}
                     >
                         Save
                     </Button>

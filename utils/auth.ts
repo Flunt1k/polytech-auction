@@ -11,12 +11,15 @@ passport.use(
         {
             usernameField: 'email',
             passwordField: 'password',
+            passReqToCallback: true,
         },
-        async (email, password, done) => {
+        async (req, email, password, done) => {
             try {
+                const type = req.body.type;
                 let user: Customer | Seller | null;
-                user = await Customer.findOne({where: {email}});
-                if (!user) {
+                if (type === 'customer') {
+                    user = await Customer.findOne({where: {email}});
+                } else {
                     user = await Seller.findOne({where: {email}});
                 }
 
