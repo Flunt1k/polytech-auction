@@ -1,17 +1,29 @@
-import {Box, GridItem} from '@chakra-ui/react';
+import {Badge, Box, GridItem} from '@chakra-ui/react';
 import {useNavigate} from 'react-router-dom';
 import React from 'react';
 import moment from 'moment';
 
 type Props = {
-    title: string;
-    price: number | undefined;
-    price2: number | undefined;
-    datetime: string;
-    id: string;
+    title?: string;
+    price?: number;
+    price2?: number;
+    datetime?: string;
+    id?: string;
+    author?: string;
+    isBuyIn?: boolean;
+    bet?: number;
 };
 
-export const Card: React.FC<Props> = ({id, price2, price, datetime, title}: Props) => {
+export const Card: React.FC<Props> = ({
+    id,
+    isBuyIn,
+    price2,
+    author,
+    price,
+    datetime,
+    title,
+    bet,
+}: Props) => {
     const navigate = useNavigate();
     return (
         <GridItem>
@@ -24,12 +36,44 @@ export const Card: React.FC<Props> = ({id, price2, price, datetime, title}: Prop
                 overflow="hidden"
                 cursor="pointer"
                 _hover={{transform: 'scale(1.05)'}}
-                onClick={() => navigate(`/product/${id}`)}
+                onClick={() => {
+                    if (id) {
+                        navigate(`/product/${id}`);
+                    }
+                }}
                 margin="10px"
             >
-                <Box mt="1" fontWeight="semibold" as="h4" lineHeight="tight" noOfLines={1}>
-                    Название: {title}
-                </Box>
+                {isBuyIn && (
+                    <Badge borderRadius="full" px="2" colorScheme="teal">
+                        Выкуп
+                    </Badge>
+                )}
+                {author && (
+                    <Box mt="1" fontWeight="semibold" as="h4" lineHeight="tight" noOfLines={1}>
+                        Ставка от пользователя: {author}
+                    </Box>
+                )}
+                {isBuyIn && bet && (
+                    <Box>
+                        Выкупил за: {bet}
+                        <Box as="span" color="white.600" fontSize="sm">
+                            / руб
+                        </Box>
+                    </Box>
+                )}
+                {!isBuyIn && bet && (
+                    <Box>
+                        Cтавка: {bet}
+                        <Box as="span" color="white.600" fontSize="sm">
+                            / руб
+                        </Box>
+                    </Box>
+                )}
+                {title && (
+                    <Box mt="1" fontWeight="semibold" as="h4" lineHeight="tight" noOfLines={1}>
+                        Название: {title}
+                    </Box>
+                )}
                 {price && (
                     <Box>
                         Цена выкупа: {price}
@@ -46,11 +90,13 @@ export const Card: React.FC<Props> = ({id, price2, price, datetime, title}: Prop
                         </Box>
                     </Box>
                 )}
-                <Box display="flex" mt="2" alignItems="center">
-                    <Box as="span" color="white.600" fontSize="sm">
-                        Дата истечения: {moment(datetime).format('DD.MM.YYYY hh:mm:ss')}
+                {datetime && (
+                    <Box display="flex" mt="2" alignItems="center">
+                        <Box as="span" color="white.600" fontSize="sm">
+                            Дата истечения: {moment(datetime).format('DD.MM.YYYY hh:mm:ss')}
+                        </Box>
                     </Box>
-                </Box>
+                )}
             </Box>
         </GridItem>
     );

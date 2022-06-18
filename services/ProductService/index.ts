@@ -94,24 +94,18 @@ export class ProductServiceImpl implements ProductService {
         includeOwner: boolean;
         includeOrder: boolean;
     }): Promise<Product | null> {
-        const {productId, includeOwner, includeOrder} = args;
-        const searchOptions = {} as {include?: ModelStatic[]};
+        const {productId} = args;
 
-        if (includeOrder) {
-            searchOptions.include = [Order, Customer];
-        }
-
-        if (includeOwner) {
-            searchOptions.include = Array.isArray(searchOptions.include)
-                ? [...searchOptions.include, Seller]
-                : [Seller];
-        }
-
-        return Product.findByPk(productId, searchOptions)
+        return Product.findByPk(productId, {
+            include: {all: true, nested: true},
+            raw: true,
+            nest: true,
+        })
             .then(async (res) => {
                 if (res === null) {
                     return null;
                 }
+                console.log(res);
 
                 const isExpired = res.expired;
 
@@ -129,6 +123,7 @@ export class ProductServiceImpl implements ProductService {
 
                 // @ts-ignore
                 res.image = res.image.toString();
+                console.log(res);
 
                 return res;
             })

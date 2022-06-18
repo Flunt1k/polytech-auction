@@ -13,7 +13,7 @@ export type Product = {
     expired: boolean;
     ownerId: string;
     owner: Seller;
-    order: Order;
+    order: Order[];
 };
 
 export type ProductCreateArgs = {

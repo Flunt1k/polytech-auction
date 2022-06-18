@@ -91,5 +91,5 @@ export class Product extends Model<Product, ProductCreateArgs> {
 
     // eslint-disable-next-line new-cap
     @HasMany(() => Order, 'productId')
-    order!: Order;
+    order!: Order[];
 }
