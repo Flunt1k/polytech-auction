@@ -11,7 +11,6 @@ export const appFetch = async ({
     token?: string;
     query?: string;
 }) => {
-    console.log(token, data);
     const response = await fetch(`${path}?${query}`, {
         method,
         headers: {

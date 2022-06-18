@@ -35,14 +35,12 @@ const ASIDE_MENU_BUTTONS: AsideMenuConfig[] = [
 const RequireAuth = ({children}: {children: JSX.Element}) => {
     const token = useSelector(selectToken);
     let location = useLocation();
-    console.log(location.pathname);
 
     if (!token || decodeJwt(token).exp < Date.now() / 1000) {
         return <Navigate to="/login" state={{from: location}} replace />;
     }
 
     if (token && (location.pathname === '/login' || location.pathname === '/registration')) {
-
         return <Navigate to="/" state={{from: location}} replace />;
     }
 
@@ -54,7 +52,6 @@ const NotRequireAuth = ({children}: {children: JSX.Element}) => {
     let location = useLocation();
 
     if (token && (location.pathname === '/login' || location.pathname === '/registration')) {
-
         return <Navigate to="/" state={{from: location}} replace />;
     }
 
@@ -67,12 +64,9 @@ export const App = () => {
     const user = useSelector(selectUser);
     const token = useSelector(selectToken);
 
-    console.log(token, 'token');
-
     const [isOpen, setIsOpen] = React.useState(false);
 
     React.useEffect(() => {
-        console.log(token);
         if (token) {
             const decodedToken = decodeJwt(token);
             if (decodedToken.type) {

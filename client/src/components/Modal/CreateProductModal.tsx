@@ -51,17 +51,6 @@ export const CreateProductModal: React.FC<Props> = (props: Props) => {
 
     const {isOpen} = props;
 
-    console.log(formState);
-    console.log(
-        !formState,
-        !formState.image,
-        formState.deadline,
-        !formState.year,
-        !formState.productName,
-        !formState.initialPrice,
-        !formState.description,
-    );
-
     return (
         <Modal isOpen={isOpen} onClose={props.onClose} initialFocusRef={initialRef}>
             <ModalOverlay />
