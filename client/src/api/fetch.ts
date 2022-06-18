@@ -27,7 +27,7 @@ export const appFetch = async ({
         localStorage.removeItem('token');
     }
 
-    if (response.status > 200) {
+    if (response.status >= 300) {
         throw JSON.stringify({...json, failed: true});
     } else {
         return json.data;

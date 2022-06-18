@@ -35,9 +35,27 @@ const ASIDE_MENU_BUTTONS: AsideMenuConfig[] = [
 const RequireAuth = ({children}: {children: JSX.Element}) => {
     const token = useSelector(selectToken);
     let location = useLocation();
+    console.log(location.pathname);
 
     if (!token || decodeJwt(token).exp < Date.now() / 1000) {
         return <Navigate to="/login" state={{from: location}} replace />;
+    }
+
+    if (token && (location.pathname === '/login' || location.pathname === '/registration')) {
+
+        return <Navigate to="/" state={{from: location}} replace />;
+    }
+
+    return children;
+};
+
+const NotRequireAuth = ({children}: {children: JSX.Element}) => {
+    const token = useSelector(selectToken);
+    let location = useLocation();
+
+    if (token && (location.pathname === '/login' || location.pathname === '/registration')) {
+
+        return <Navigate to="/" state={{from: location}} replace />;
     }
 
     return children;
@@ -133,8 +151,22 @@ export const App = () => {
                                 </RequireAuth>
                             }
                         />
-                        <Route path="/login" element={<AuthPage />} />
-                        <Route path="/registration" element={<RegPage />} />
+                        <Route
+                            path="/login"
+                            element={
+                                <NotRequireAuth>
+                                    <AuthPage />
+                                </NotRequireAuth>
+                            }
+                        />
+                        <Route
+                            path="/registration"
+                            element={
+                                <NotRequireAuth>
+                                    <RegPage />
+                                </NotRequireAuth>
+                            }
+                        />
                     </Routes>
                 </Box>
             </Flex>
